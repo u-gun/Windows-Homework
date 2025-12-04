@@ -12,6 +12,8 @@ using System.Windows.Forms;
 namespace _9_1113;
 public partial class _11_Form : Form
 {
+    int tickCount = 0;
+
     public _11_Form()
     {
         InitializeComponent();
@@ -77,5 +79,37 @@ public partial class _11_Form : Form
             treeView1.Nodes.Remove(treeView1.SelectedNode);
             return;
         }
+    }
+
+    private void button_insert_class_in_treeView_Click(object sender, EventArgs e)
+    {
+        if ((treeView1.SelectedNode != null) && (domainUpDown_class.SelectedItem != null))
+        {
+            treeView1.SelectedNode.Nodes.Add(domainUpDown_class.SelectedItem.ToString());
+            return;
+        }
+    }
+
+    private void numericUpDown_Calculator_ValueChanged(object sender, EventArgs e)
+    {
+        double value = (double)numericUpDown_Calculator.Value;
+        C_result_log.Text = Math.Log10(value).ToString();
+        C_result_SQR.Text = Math.Pow(value, 2).ToString();
+        C_result_SQRT.Text = Math.Sqrt(value).ToString();
+        trackBar_calculator.Value = (int)value;
+    }
+
+    private void trackBar_calculator_Scroll(object sender, EventArgs e)
+    {
+        numericUpDown_Calculator.Value = trackBar_calculator.Value;
+    }
+
+    private void timer_frame_Tick(object sender, EventArgs e)
+    {
+        tickCount++;
+        label_weightlifting.Image = imageList_weightlifting.Images[tickCount % 4];
+        label_golf.Image = imageList_golf.Images[tickCount % 15];
+        label_tenis.Image = imageList_tenis.Images[tickCount % 20];
+
     }
 }

@@ -59,25 +59,5 @@ namespace _9_1113.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
-        internal static System.Drawing.Bitmap 개슴츠레한_고양이 {
-            get {
-                object obj = ResourceManager.GetObject("개슴츠레한 고양이", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
-        internal static System.Drawing.Bitmap 랩탑불타파덕 {
-            get {
-                object obj = ResourceManager.GetObject("랩탑불타파덕", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
     }
 }

@@ -17,12 +17,14 @@ namespace _9_1113
             _7_1016_1._7_Form1 form7 = new _7_1016_1._7_Form1();
             this.Hide();
             form7.ShowDialog();
+            this.Show();
         }
         private void modaless_8page_Click(object sender, EventArgs e)
         {
             _8_1030._8_Form1 form8 = new _8_1030._8_Form1();
             this.Hide();
-            form8.Show();
+            form8.ShowDialog();
+            this.Show();
         }
 
 
@@ -31,12 +33,14 @@ namespace _9_1113
         private void Mouse_basic_Click(object sender, EventArgs e)
         {
             this.Hide();
-            _9_1113.mouse_basic MB = new _9_1113.mouse_basic(); MB.Show();
+            _9_1113.mouse_basic MB = new _9_1113.mouse_basic(); MB.ShowDialog();
+            this.Show();
         }
         private void Mouse_application_Click(object sender, EventArgs e)
         {
             this.Hide();
-            _9_1113.mouse_application MB = new _9_1113.mouse_application(); MB.Show();
+            _9_1113.mouse_application MB = new _9_1113.mouse_application(); MB.ShowDialog();
+            this.Show();
         }
 
 
@@ -44,14 +48,16 @@ namespace _9_1113
         {
             _9_1113.keyboard_basic keyboard_Basic = new _9_1113.keyboard_basic();
             this.Hide();
-            keyboard_Basic.Show();
+            keyboard_Basic.ShowDialog();
+            this.Show();
         }
 
         private void 응용ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             _9_1113.keyboard_application keyboard_Application = new _9_1113.keyboard_application();
             this.Hide();
-            keyboard_Application.Show();
+            keyboard_Application.ShowDialog();
+            this.Show();
         }
 
 
@@ -59,10 +65,17 @@ namespace _9_1113
         {
             _9_1113._11_Form _11_Form = new _9_1113._11_Form();
             this.Hide();
-            _11_Form.Show();
+            _11_Form.ShowDialog();
+            this.Show();
         }
 
-
+        private void _12ToolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+            _9_1113._12Form _12Form = new _9_1113._12Form();
+            this.Hide();
+            _12Form.ShowDialog();
+            this.Show();
+        }
 
         private void PrintPage(object sender, PrintPageEventArgs e)
         {
@@ -188,6 +201,7 @@ namespace _9_1113
 
         private void NewFileOpen_Click(object sender, EventArgs e)
         {
+            if (textBox1.Text.Length != 0)
             if (MessageBox.Show("현재 파일을 저장하시겠습니까?", "확인",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                 MessageBoxDefaultButton.Button2) == DialogResult.Yes)
@@ -205,5 +219,29 @@ namespace _9_1113
             textBox1.Text = "";
         }
 
+        // 여기서부터는 창작의 시간
+
+        private void 그림판PToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _9_1113.Form_Paint CF_paint = new _9_1113.Form_Paint();
+            this.Hide();
+            CF_paint.ShowDialog();
+            this.Show();
+        }
+
+        private void 격투게임도트사전ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void 어둠미로MToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void 지뢰찾기ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

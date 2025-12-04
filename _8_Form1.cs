@@ -13,7 +13,9 @@ namespace _8_1030
         private void open_7Form_Click(object sender, EventArgs e)
         {
             _7_1016_1._7_Form1 _7_Form1 = new _7_1016_1._7_Form1();
-            _7_Form1.Show();
+            this.Hide();
+            _7_Form1.ShowDialog();
+            this.Show();
         }
         private void outLine_button_Click(object sender, EventArgs e)
         {

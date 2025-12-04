@@ -1,6 +1,6 @@
 ﻿namespace _9_1113;
 
-partial class login
+partial class Login
 {
     /// <summary>
     /// Required designer variable.
@@ -41,7 +41,7 @@ partial class login
         login_button.Location = new Point(66, 137);
         login_button.Name = "login_button";
         login_button.Size = new Size(94, 29);
-        login_button.TabIndex = 0;
+        login_button.TabIndex = 2;
         login_button.Text = "확인";
         login_button.UseVisualStyleBackColor = true;
         login_button.Click += login_button_Click;
@@ -51,7 +51,7 @@ partial class login
         singUp_button.Location = new Point(166, 137);
         singUp_button.Name = "singUp_button";
         singUp_button.Size = new Size(94, 29);
-        singUp_button.TabIndex = 1;
+        singUp_button.TabIndex = 3;
         singUp_button.Text = "회원가입";
         singUp_button.UseVisualStyleBackColor = true;
         singUp_button.Click += singUp_button_Click;
@@ -62,7 +62,7 @@ partial class login
         label_ID.Location = new Point(48, 63);
         label_ID.Name = "label_ID";
         label_ID.Size = new Size(24, 20);
-        label_ID.TabIndex = 2;
+        label_ID.TabIndex = 4;
         label_ID.Text = "ID";
         // 
         // label_PW
@@ -71,7 +71,7 @@ partial class login
         label_PW.Location = new Point(40, 96);
         label_PW.Name = "label_PW";
         label_PW.Size = new Size(32, 20);
-        label_PW.TabIndex = 3;
+        label_PW.TabIndex = 5;
         label_PW.Text = "PW";
         // 
         // textBox_PW
@@ -80,14 +80,14 @@ partial class login
         textBox_PW.Name = "textBox_PW";
         textBox_PW.PasswordChar = '*';
         textBox_PW.Size = new Size(182, 27);
-        textBox_PW.TabIndex = 4;
+        textBox_PW.TabIndex = 1;
         // 
         // textBox_ID
         // 
         textBox_ID.Location = new Point(78, 63);
         textBox_ID.Name = "textBox_ID";
         textBox_ID.Size = new Size(182, 27);
-        textBox_ID.TabIndex = 5;
+        textBox_ID.TabIndex = 0;
         // 
         // login
         // 

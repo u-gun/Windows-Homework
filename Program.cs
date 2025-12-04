@@ -11,7 +11,7 @@ namespace _9_1113
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new login());
+            Application.Run(new Login());
         }
     }
 }

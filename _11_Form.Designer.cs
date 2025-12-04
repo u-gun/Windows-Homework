@@ -30,16 +30,16 @@ partial class _11_Form
     {
         components = new System.ComponentModel.Container();
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(_11_Form));
-        ListViewItem listViewItem1 = new ListViewItem(new string[] { "대한민국", "서울", "아시아", "0.5M", "082" }, 1);
-        ListViewItem listViewItem2 = new ListViewItem(new string[] { "미국", "워싱턴", "아메리카", "3.0M", "01" }, 2);
-        ListViewItem listViewItem3 = new ListViewItem(new string[] { "영국", "파리", "유럽", "0.6M", "33" }, 0);
-        ListViewItem listViewItem4 = new ListViewItem(new string[] { "이집트", "카이로", "아프리카", "1.1M", "20" }, -1);
-        ListViewItem listViewItem5 = new ListViewItem(new string[] { "호주", "호주", "캔버라", "0.2M", "61" }, -1);
-        TreeNode treeNode1 = new TreeNode("바탕화면");
-        TreeNode treeNode2 = new TreeNode("다운로드");
-        TreeNode treeNode3 = new TreeNode("C:\\");
-        TreeNode treeNode4 = new TreeNode("D:\\");
-        TreeNode treeNode5 = new TreeNode("내 컴퓨터", 22, 23, new TreeNode[] { treeNode1, treeNode2, treeNode3, treeNode4 });
+        ListViewItem listViewItem6 = new ListViewItem(new string[] { "대한민국", "서울", "아시아", "0.5M", "082" }, 1);
+        ListViewItem listViewItem7 = new ListViewItem(new string[] { "미국", "워싱턴", "아메리카", "3.0M", "01" }, 2);
+        ListViewItem listViewItem8 = new ListViewItem(new string[] { "영국", "파리", "유럽", "0.6M", "33" }, 0);
+        ListViewItem listViewItem9 = new ListViewItem(new string[] { "이집트", "카이로", "아프리카", "1.1M", "20" }, -1);
+        ListViewItem listViewItem10 = new ListViewItem(new string[] { "호주", "호주", "캔버라", "0.2M", "61" }, -1);
+        TreeNode treeNode6 = new TreeNode("바탕화면");
+        TreeNode treeNode7 = new TreeNode("다운로드");
+        TreeNode treeNode8 = new TreeNode("C:\\");
+        TreeNode treeNode9 = new TreeNode("D:\\");
+        TreeNode treeNode10 = new TreeNode("내 컴퓨터", 22, 23, new TreeNode[] { treeNode6, treeNode7, treeNode8, treeNode9 });
         imageList_icon = new ImageList(components);
         imageList_winIcon = new ImageList(components);
         imageList_flag = new ImageList(components);
@@ -60,6 +60,28 @@ partial class _11_Form
         textBox_tree = new TextBox();
         button_insert = new Button();
         button_delete = new Button();
+        domainUpDown_class = new DomainUpDown();
+        button_insert_class_in_treeView = new Button();
+        numericUpDown_Calculator = new NumericUpDown();
+        panel_calculator = new Panel();
+        trackBar_calculator = new TrackBar();
+        C_result_SQRT = new TextBox();
+        label3 = new Label();
+        C_result_SQR = new TextBox();
+        label2 = new Label();
+        C_result_log = new TextBox();
+        label1 = new Label();
+        timer_frame = new System.Windows.Forms.Timer(components);
+        label_weightlifting = new Label();
+        imageList_weightlifting = new ImageList(components);
+        imageList1 = new ImageList(components);
+        label_golf = new Label();
+        imageList_golf = new ImageList(components);
+        imageList_tenis = new ImageList(components);
+        label_tenis = new Label();
+        ((System.ComponentModel.ISupportInitialize)numericUpDown_Calculator).BeginInit();
+        panel_calculator.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)trackBar_calculator).BeginInit();
         SuspendLayout();
         // 
         // imageList_icon
@@ -426,7 +448,7 @@ partial class _11_Form
         // listView1
         // 
         listView1.Columns.AddRange(new ColumnHeader[] { nation, capital, area, Population, Number });
-        listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5 });
+        listView1.Items.AddRange(new ListViewItem[] { listViewItem6, listViewItem7, listViewItem8, listViewItem9, listViewItem10 });
         listView1.Location = new Point(151, 12);
         listView1.Name = "listView1";
         listView1.Size = new Size(479, 226);
@@ -475,9 +497,9 @@ partial class _11_Form
         label_nation.AutoSize = true;
         label_nation.Location = new Point(0, 218);
         label_nation.Name = "label_nation";
-        label_nation.Size = new Size(50, 20);
+        label_nation.Size = new Size(119, 20);
         label_nation.TabIndex = 7;
-        label_nation.Text = "label1";
+        label_nation.Text = "선택한 국가이름";
         // 
         // treeView1
         // 
@@ -485,19 +507,19 @@ partial class _11_Form
         treeView1.ImageList = imageList_winIcon;
         treeView1.Location = new Point(636, 12);
         treeView1.Name = "treeView1";
-        treeNode1.Name = "background";
-        treeNode1.Text = "바탕화면";
-        treeNode2.Name = "노드1";
-        treeNode2.Text = "다운로드";
-        treeNode3.Name = "노드2";
-        treeNode3.Text = "C:\\";
-        treeNode4.Name = "노드3";
-        treeNode4.Text = "D:\\";
-        treeNode5.ImageIndex = 22;
-        treeNode5.Name = "root";
-        treeNode5.SelectedImageIndex = 23;
-        treeNode5.Text = "내 컴퓨터";
-        treeView1.Nodes.AddRange(new TreeNode[] { treeNode5 });
+        treeNode6.Name = "background";
+        treeNode6.Text = "바탕화면";
+        treeNode7.Name = "노드1";
+        treeNode7.Text = "다운로드";
+        treeNode8.Name = "노드2";
+        treeNode8.Text = "C:\\";
+        treeNode9.Name = "노드3";
+        treeNode9.Text = "D:\\";
+        treeNode10.ImageIndex = 22;
+        treeNode10.Name = "root";
+        treeNode10.SelectedImageIndex = 23;
+        treeNode10.Text = "내 컴퓨터";
+        treeView1.Nodes.AddRange(new TreeNode[] { treeNode10 });
         treeView1.SelectedImageIndex = 0;
         treeView1.Size = new Size(265, 226);
         treeView1.TabIndex = 8;
@@ -529,11 +551,237 @@ partial class _11_Form
         button_delete.UseVisualStyleBackColor = true;
         button_delete.Click += button_delete_Click;
         // 
+        // domainUpDown_class
+        // 
+        domainUpDown_class.Items.Add("논리회로");
+        domainUpDown_class.Items.Add("컴퓨터구조");
+        domainUpDown_class.Items.Add("알고리즘");
+        domainUpDown_class.Items.Add("개빡샌교양");
+        domainUpDown_class.Items.Add("쉽고널널한교양");
+        domainUpDown_class.Items.Add("필수교양");
+        domainUpDown_class.Items.Add("필수전공");
+        domainUpDown_class.Items.Add("개빡샌전공");
+        domainUpDown_class.Items.Add("존내쉬운전공");
+        domainUpDown_class.Items.Add("족보있는전공");
+        domainUpDown_class.Location = new Point(1056, 18);
+        domainUpDown_class.Name = "domainUpDown_class";
+        domainUpDown_class.Size = new Size(199, 27);
+        domainUpDown_class.TabIndex = 12;
+        domainUpDown_class.Text = "교과목 목록";
+        domainUpDown_class.Wrap = true;
+        // 
+        // button_insert_class_in_treeView
+        // 
+        button_insert_class_in_treeView.Location = new Point(1056, 50);
+        button_insert_class_in_treeView.Name = "button_insert_class_in_treeView";
+        button_insert_class_in_treeView.Size = new Size(138, 29);
+        button_insert_class_in_treeView.TabIndex = 13;
+        button_insert_class_in_treeView.Text = "교과목 삽입";
+        button_insert_class_in_treeView.UseVisualStyleBackColor = true;
+        button_insert_class_in_treeView.Click += button_insert_class_in_treeView_Click;
+        // 
+        // numericUpDown_Calculator
+        // 
+        numericUpDown_Calculator.Location = new Point(3, 20);
+        numericUpDown_Calculator.Name = "numericUpDown_Calculator";
+        numericUpDown_Calculator.Size = new Size(244, 27);
+        numericUpDown_Calculator.TabIndex = 14;
+        numericUpDown_Calculator.TextAlign = HorizontalAlignment.Right;
+        numericUpDown_Calculator.ValueChanged += numericUpDown_Calculator_ValueChanged;
+        // 
+        // panel_calculator
+        // 
+        panel_calculator.BackColor = SystemColors.ActiveBorder;
+        panel_calculator.Controls.Add(trackBar_calculator);
+        panel_calculator.Controls.Add(C_result_SQRT);
+        panel_calculator.Controls.Add(label3);
+        panel_calculator.Controls.Add(C_result_SQR);
+        panel_calculator.Controls.Add(label2);
+        panel_calculator.Controls.Add(C_result_log);
+        panel_calculator.Controls.Add(label1);
+        panel_calculator.Controls.Add(numericUpDown_Calculator);
+        panel_calculator.Location = new Point(12, 244);
+        panel_calculator.Name = "panel_calculator";
+        panel_calculator.Size = new Size(315, 246);
+        panel_calculator.TabIndex = 15;
+        // 
+        // trackBar_calculator
+        // 
+        trackBar_calculator.BackColor = SystemColors.ActiveBorder;
+        trackBar_calculator.LargeChange = 10;
+        trackBar_calculator.Location = new Point(253, 3);
+        trackBar_calculator.Maximum = 100;
+        trackBar_calculator.Name = "trackBar_calculator";
+        trackBar_calculator.Orientation = Orientation.Vertical;
+        trackBar_calculator.Size = new Size(56, 240);
+        trackBar_calculator.TabIndex = 16;
+        trackBar_calculator.TickFrequency = 10;
+        trackBar_calculator.Scroll += trackBar_calculator_Scroll;
+        // 
+        // C_result_SQRT
+        // 
+        C_result_SQRT.Location = new Point(70, 149);
+        C_result_SQRT.Name = "C_result_SQRT";
+        C_result_SQRT.Size = new Size(177, 27);
+        C_result_SQRT.TabIndex = 20;
+        // 
+        // label3
+        // 
+        label3.AutoSize = true;
+        label3.Location = new Point(5, 152);
+        label3.Name = "label3";
+        label3.Size = new Size(62, 20);
+        label3.TabIndex = 19;
+        label3.Text = "SQRT =";
+        label3.TextAlign = ContentAlignment.MiddleRight;
+        // 
+        // C_result_SQR
+        // 
+        C_result_SQR.Location = new Point(70, 109);
+        C_result_SQR.Name = "C_result_SQR";
+        C_result_SQR.Size = new Size(177, 27);
+        C_result_SQR.TabIndex = 18;
+        // 
+        // label2
+        // 
+        label2.AutoSize = true;
+        label2.Location = new Point(14, 112);
+        label2.Name = "label2";
+        label2.Size = new Size(54, 20);
+        label2.TabIndex = 17;
+        label2.Text = "SQR =";
+        label2.TextAlign = ContentAlignment.MiddleRight;
+        // 
+        // C_result_log
+        // 
+        C_result_log.Location = new Point(70, 67);
+        C_result_log.Name = "C_result_log";
+        C_result_log.Size = new Size(177, 27);
+        C_result_log.TabIndex = 16;
+        // 
+        // label1
+        // 
+        label1.AutoSize = true;
+        label1.Location = new Point(5, 70);
+        label1.Name = "label1";
+        label1.Size = new Size(63, 20);
+        label1.TabIndex = 15;
+        label1.Text = "log10 =";
+        label1.TextAlign = ContentAlignment.MiddleRight;
+        // 
+        // timer_frame
+        // 
+        timer_frame.Enabled = true;
+        timer_frame.Interval = 250;
+        timer_frame.Tick += timer_frame_Tick;
+        // 
+        // label_weightlifting
+        // 
+        label_weightlifting.AutoSize = true;
+        label_weightlifting.BorderStyle = BorderStyle.FixedSingle;
+        label_weightlifting.Font = new Font("맑은 고딕", 80F);
+        label_weightlifting.Location = new Point(333, 247);
+        label_weightlifting.Name = "label_weightlifting";
+        label_weightlifting.Size = new Size(171, 179);
+        label_weightlifting.TabIndex = 17;
+        label_weightlifting.Text = "  ";
+        // 
+        // imageList_weightlifting
+        // 
+        imageList_weightlifting.ColorDepth = ColorDepth.Depth32Bit;
+        imageList_weightlifting.ImageStream = (ImageListStreamer)resources.GetObject("imageList_weightlifting.ImageStream");
+        imageList_weightlifting.TransparentColor = Color.Transparent;
+        imageList_weightlifting.Images.SetKeyName(0, "역도1.png");
+        imageList_weightlifting.Images.SetKeyName(1, "역도2.png");
+        imageList_weightlifting.Images.SetKeyName(2, "역도3.png");
+        imageList_weightlifting.Images.SetKeyName(3, "역도4.png");
+        // 
+        // imageList1
+        // 
+        imageList1.ColorDepth = ColorDepth.Depth32Bit;
+        imageList1.ImageSize = new Size(16, 16);
+        imageList1.TransparentColor = Color.Transparent;
+        // 
+        // label_golf
+        // 
+        label_golf.AutoSize = true;
+        label_golf.BorderStyle = BorderStyle.FixedSingle;
+        label_golf.Font = new Font("맑은 고딕", 80F);
+        label_golf.Location = new Point(510, 247);
+        label_golf.Name = "label_golf";
+        label_golf.Size = new Size(171, 179);
+        label_golf.TabIndex = 18;
+        label_golf.Text = "  ";
+        // 
+        // imageList_golf
+        // 
+        imageList_golf.ColorDepth = ColorDepth.Depth32Bit;
+        imageList_golf.ImageStream = (ImageListStreamer)resources.GetObject("imageList_golf.ImageStream");
+        imageList_golf.TransparentColor = Color.Transparent;
+        imageList_golf.Images.SetKeyName(0, "����1.png");
+        imageList_golf.Images.SetKeyName(1, "����2.png");
+        imageList_golf.Images.SetKeyName(2, "����3.png");
+        imageList_golf.Images.SetKeyName(3, "����4.png");
+        imageList_golf.Images.SetKeyName(4, "����5.png");
+        imageList_golf.Images.SetKeyName(5, "����6.png");
+        imageList_golf.Images.SetKeyName(6, "����7.png");
+        imageList_golf.Images.SetKeyName(7, "����8.png");
+        imageList_golf.Images.SetKeyName(8, "����9.png");
+        imageList_golf.Images.SetKeyName(9, "����10.png");
+        imageList_golf.Images.SetKeyName(10, "����11.png");
+        imageList_golf.Images.SetKeyName(11, "����12.png");
+        imageList_golf.Images.SetKeyName(12, "����13.png");
+        imageList_golf.Images.SetKeyName(13, "����14.png");
+        imageList_golf.Images.SetKeyName(14, "����15.png");
+        // 
+        // imageList_tenis
+        // 
+        imageList_tenis.ColorDepth = ColorDepth.Depth32Bit;
+        imageList_tenis.ImageStream = (ImageListStreamer)resources.GetObject("imageList_tenis.ImageStream");
+        imageList_tenis.TransparentColor = Color.Transparent;
+        imageList_tenis.Images.SetKeyName(0, "�״Ͻ�1.png");
+        imageList_tenis.Images.SetKeyName(1, "�״Ͻ�2.png");
+        imageList_tenis.Images.SetKeyName(2, "�״Ͻ�3.png");
+        imageList_tenis.Images.SetKeyName(3, "�״Ͻ�4.png");
+        imageList_tenis.Images.SetKeyName(4, "�״Ͻ�5.png");
+        imageList_tenis.Images.SetKeyName(5, "�״Ͻ�6.png");
+        imageList_tenis.Images.SetKeyName(6, "�״Ͻ�7.png");
+        imageList_tenis.Images.SetKeyName(7, "�״Ͻ�8.png");
+        imageList_tenis.Images.SetKeyName(8, "�״Ͻ�9.png");
+        imageList_tenis.Images.SetKeyName(9, "�״Ͻ�10.png");
+        imageList_tenis.Images.SetKeyName(10, "�״Ͻ�11.png");
+        imageList_tenis.Images.SetKeyName(11, "�״Ͻ�12.png");
+        imageList_tenis.Images.SetKeyName(12, "�״Ͻ�13.png");
+        imageList_tenis.Images.SetKeyName(13, "�״Ͻ�14.png");
+        imageList_tenis.Images.SetKeyName(14, "�״Ͻ�15.png");
+        imageList_tenis.Images.SetKeyName(15, "�״Ͻ�16.png");
+        imageList_tenis.Images.SetKeyName(16, "�״Ͻ�17.png");
+        imageList_tenis.Images.SetKeyName(17, "�״Ͻ�18.png");
+        imageList_tenis.Images.SetKeyName(18, "�״Ͻ�19.png");
+        imageList_tenis.Images.SetKeyName(19, "�״Ͻ�20.png");
+        // 
+        // label_tenis
+        // 
+        label_tenis.AutoSize = true;
+        label_tenis.BorderStyle = BorderStyle.FixedSingle;
+        label_tenis.Font = new Font("맑은 고딕", 80F);
+        label_tenis.Location = new Point(687, 247);
+        label_tenis.Name = "label_tenis";
+        label_tenis.Size = new Size(171, 179);
+        label_tenis.TabIndex = 19;
+        label_tenis.Text = "  ";
+        // 
         // _11_Form
         // 
         AutoScaleDimensions = new SizeF(9F, 20F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1321, 502);
+        Controls.Add(label_tenis);
+        Controls.Add(label_golf);
+        Controls.Add(label_weightlifting);
+        Controls.Add(panel_calculator);
+        Controls.Add(button_insert_class_in_treeView);
+        Controls.Add(domainUpDown_class);
         Controls.Add(button_delete);
         Controls.Add(button_insert);
         Controls.Add(textBox_tree);
@@ -548,6 +796,10 @@ partial class _11_Form
         Controls.Add(radioButton_LargeIcon);
         Name = "_11_Form";
         Text = "_11_Form";
+        ((System.ComponentModel.ISupportInitialize)numericUpDown_Calculator).EndInit();
+        panel_calculator.ResumeLayout(false);
+        panel_calculator.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)trackBar_calculator).EndInit();
         ResumeLayout(false);
         PerformLayout();
     }
@@ -574,4 +826,23 @@ partial class _11_Form
     private TextBox textBox_tree;
     private Button button_insert;
     private Button button_delete;
+    private DomainUpDown domainUpDown_class;
+    private Button button_insert_class_in_treeView;
+    private NumericUpDown numericUpDown_Calculator;
+    private Panel panel_calculator;
+    private TextBox C_result_SQRT;
+    private Label label3;
+    private TextBox C_result_SQR;
+    private Label label2;
+    private TextBox C_result_log;
+    private Label label1;
+    private TrackBar trackBar_calculator;
+    private System.Windows.Forms.Timer timer_frame;
+    private Label label_weightlifting;
+    private ImageList imageList_weightlifting;
+    private ImageList imageList1;
+    private Label label_golf;
+    private ImageList imageList_golf;
+    private ImageList imageList_tenis;
+    private Label label_tenis;
 }

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(_7_Form1));
             getTimeNow = new Button();
             timer1 = new System.Windows.Forms.Timer(components);
             button1 = new Button();
@@ -40,10 +41,10 @@
             // 
             // getTimeNow
             // 
-            getTimeNow.BackgroundImage = _9_1113.Properties.Resources.개슴츠레한_고양이;
+            getTimeNow.BackgroundImage = (Image)resources.GetObject("getTimeNow.BackgroundImage");
             getTimeNow.BackgroundImageLayout = ImageLayout.Stretch;
             getTimeNow.Font = new Font("맑은 고딕", 13F);
-            getTimeNow.ForeColor = Color.RosyBrown;
+            getTimeNow.ForeColor = Color.Transparent;
             getTimeNow.Location = new Point(3, 12);
             getTimeNow.Name = "getTimeNow";
             getTimeNow.Size = new Size(196, 253);
@@ -58,7 +59,7 @@
             // 
             // button1
             // 
-            button1.Location = new Point(301, 166);
+            button1.Location = new Point(3, 317);
             button1.Name = "button1";
             button1.Size = new Size(116, 29);
             button1.TabIndex = 1;
@@ -68,7 +69,7 @@
             // 
             // closer
             // 
-            closer.Location = new Point(301, 128);
+            closer.Location = new Point(3, 282);
             closer.Name = "closer";
             closer.Size = new Size(94, 29);
             closer.TabIndex = 2;
@@ -79,22 +80,22 @@
             // panel1
             // 
             panel1.BackColor = Color.DimGray;
-            panel1.Location = new Point(439, 42);
+            panel1.Location = new Point(391, 12);
             panel1.Name = "panel1";
-            panel1.Size = new Size(249, 223);
+            panel1.Size = new Size(358, 404);
             panel1.TabIndex = 3;
             panel1.Click += ThisButtonColor_Click;
             panel1.Paint += panel_Painte;
             // 
             // button5
             // 
-            button5.BackgroundImage = _9_1113.Properties.Resources.랩탑불타파덕;
+            button5.BackgroundImage = (Image)resources.GetObject("button5.BackgroundImage");
             button5.BackgroundImageLayout = ImageLayout.Stretch;
             button5.Font = new Font("맑은 고딕", 7F);
-            button5.ForeColor = Color.RosyBrown;
-            button5.Location = new Point(476, 271);
+            button5.ForeColor = Color.Transparent;
+            button5.Location = new Point(205, 12);
             button5.Name = "button5";
-            button5.Size = new Size(101, 125);
+            button5.Size = new Size(180, 253);
             button5.TabIndex = 1;
             button5.Text = "패널 바탕색 조작";
             button5.UseVisualStyleBackColor = true;
@@ -106,7 +107,7 @@
             button2.BackgroundImageLayout = ImageLayout.Stretch;
             button2.Font = new Font("맑은 고딕", 7F);
             button2.ForeColor = Color.RosyBrown;
-            button2.Location = new Point(316, 268);
+            button2.Location = new Point(3, 352);
             button2.Name = "button2";
             button2.Size = new Size(119, 30);
             button2.TabIndex = 2;
