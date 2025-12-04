@@ -28,7 +28,6 @@ partial class Form_Paint
     /// </summary>
     private void InitializeComponent()
     {
-        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Paint));
         menuStrip_top = new MenuStrip();
         파일toolStripMenuItem = new ToolStripMenuItem();
         새파일NToolStripMenuItem = new ToolStripMenuItem();
@@ -54,8 +53,20 @@ partial class Form_Paint
         selector_point = new ToolStripMenuItem();
         selector_rectangle = new ToolStripMenuItem();
         selector_all = new ToolStripMenuItem();
+        bruch = new ToolStripButton();
+        selectColorSample = new ToolStripButton();
+        color_selector = new ToolStripButton();
+        toolStripButton1 = new ToolStripButton();
+        toolStripButton2 = new ToolStripButton();
+        toolStripButton3 = new ToolStripButton();
+        toolStripButton4 = new ToolStripButton();
+        toolStripButton5 = new ToolStripButton();
+        colorDialog = new ColorDialog();
+        fontDialog1 = new FontDialog();
+        Board_PB = new PictureBox();
         menuStrip_top.SuspendLayout();
         toolStrip1.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)Board_PB).BeginInit();
         SuspendLayout();
         // 
         // menuStrip_top
@@ -64,7 +75,7 @@ partial class Form_Paint
         menuStrip_top.Items.AddRange(new ToolStripItem[] { 파일toolStripMenuItem, 편집EToolStripMenuItem, 보기ToolStripMenuItem });
         menuStrip_top.Location = new Point(0, 0);
         menuStrip_top.Name = "menuStrip_top";
-        menuStrip_top.Size = new Size(1179, 28);
+        menuStrip_top.Size = new Size(874, 28);
         menuStrip_top.TabIndex = 0;
         menuStrip_top.Text = "menuStrip1";
         // 
@@ -191,59 +202,149 @@ partial class Form_Paint
         // 
         // toolStrip1
         // 
-        toolStrip1.ImageScalingSize = new Size(20, 20);
-        toolStrip1.Items.AddRange(new ToolStripItem[] { selector_option });
+        toolStrip1.ImageScalingSize = new Size(25, 25);
+        toolStrip1.Items.AddRange(new ToolStripItem[] { selector_option, bruch, selectColorSample, color_selector, toolStripButton1, toolStripButton2, toolStripButton3, toolStripButton4, toolStripButton5 });
         toolStrip1.Location = new Point(0, 28);
         toolStrip1.Name = "toolStrip1";
-        toolStrip1.Size = new Size(1179, 27);
+        toolStrip1.Size = new Size(874, 32);
         toolStrip1.TabIndex = 1;
         toolStrip1.Text = "toolStrip1";
         // 
         // selector_option
         // 
+        selector_option.AutoToolTip = false;
         selector_option.DisplayStyle = ToolStripItemDisplayStyle.Image;
         selector_option.DropDownItems.AddRange(new ToolStripItem[] { selector_point, selector_rectangle, selector_all });
-        selector_option.Image = (Image)resources.GetObject("selector_option.Image");
+        selector_option.Image = Resource.forCreate.Resource1.selector;
         selector_option.ImageTransparentColor = Color.Magenta;
         selector_option.MergeIndex = 0;
         selector_option.Name = "selector_option";
-        selector_option.Size = new Size(34, 24);
+        selector_option.Size = new Size(39, 29);
         // 
         // selector_point
         // 
         selector_point.Checked = true;
         selector_point.CheckState = CheckState.Checked;
-        selector_point.Image = (Image)resources.GetObject("selector_point.Image");
+        selector_point.Image = Resource.forCreate.Resource1.selector;
         selector_point.Name = "selector_point";
-        selector_point.Size = new Size(224, 26);
+        selector_point.Size = new Size(157, 26);
         selector_point.Text = "선택";
         selector_point.TextAlign = ContentAlignment.MiddleRight;
         selector_point.Click += selector_Click;
         // 
         // selector_rectangle
         // 
-        selector_rectangle.Image = (Image)resources.GetObject("selector_rectangle.Image");
+        selector_rectangle.Image = Resource.forCreate.Resource1.selector_rectangle;
         selector_rectangle.MergeIndex = 1;
         selector_rectangle.Name = "selector_rectangle";
-        selector_rectangle.Size = new Size(224, 26);
+        selector_rectangle.Size = new Size(157, 26);
         selector_rectangle.Text = "사각 선택";
         selector_rectangle.TextAlign = ContentAlignment.MiddleRight;
         selector_rectangle.Click += selector_Click;
         // 
         // selector_all
         // 
-        selector_all.Image = (Image)resources.GetObject("selector_all.Image");
+        selector_all.Image = Resource.forCreate.Resource1.selector_all;
         selector_all.MergeIndex = 2;
         selector_all.Name = "selector_all";
-        selector_all.Size = new Size(224, 26);
+        selector_all.Size = new Size(157, 26);
         selector_all.Text = "모두 선택";
         selector_all.Click += selector_Click;
+        // 
+        // bruch
+        // 
+        bruch.AutoToolTip = false;
+        bruch.DisplayStyle = ToolStripItemDisplayStyle.Image;
+        bruch.Image = Resource.forCreate.Resource1.text;
+        bruch.ImageTransparentColor = Color.Magenta;
+        bruch.Name = "bruch";
+        bruch.Size = new Size(29, 29);
+        bruch.Text = "브러시 속성";
+        // 
+        // selectColorSample
+        // 
+        selectColorSample.BackColor = Color.Black;
+        selectColorSample.DisplayStyle = ToolStripItemDisplayStyle.Image;
+        selectColorSample.ImageTransparentColor = Color.Magenta;
+        selectColorSample.Name = "selectColorSample";
+        selectColorSample.Size = new Size(29, 29);
+        selectColorSample.Text = "color sample";
+        // 
+        // color_selector
+        // 
+        color_selector.DisplayStyle = ToolStripItemDisplayStyle.Image;
+        color_selector.Image = Resource.forCreate.Resource1.palette;
+        color_selector.ImageTransparentColor = Color.Transparent;
+        color_selector.Name = "color_selector";
+        color_selector.Size = new Size(29, 29);
+        color_selector.Tag = "colorDialog_front";
+        color_selector.Text = "팔렛트";
+        color_selector.Click += color_selector_Click;
+        // 
+        // toolStripButton1
+        // 
+        toolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Image;
+        toolStripButton1.Image = Resource.forCreate.Resource1.brush;
+        toolStripButton1.ImageTransparentColor = Color.Magenta;
+        toolStripButton1.Name = "toolStripButton1";
+        toolStripButton1.Size = new Size(29, 29);
+        toolStripButton1.Text = "brush";
+        toolStripButton1.Click += toolStripButton1_Click;
+        // 
+        // toolStripButton2
+        // 
+        toolStripButton2.DisplayStyle = ToolStripItemDisplayStyle.Image;
+        toolStripButton2.Image = Resource.forCreate.Resource1.nodes;
+        toolStripButton2.ImageTransparentColor = Color.Magenta;
+        toolStripButton2.Name = "toolStripButton2";
+        toolStripButton2.Size = new Size(29, 29);
+        toolStripButton2.Text = "toolStripButton2";
+        // 
+        // toolStripButton3
+        // 
+        toolStripButton3.DisplayStyle = ToolStripItemDisplayStyle.Image;
+        toolStripButton3.Image = Resource.forCreate.Resource1.rectangle;
+        toolStripButton3.ImageTransparentColor = Color.Magenta;
+        toolStripButton3.Name = "toolStripButton3";
+        toolStripButton3.Size = new Size(29, 29);
+        toolStripButton3.Text = "toolStripButton3";
+        // 
+        // toolStripButton4
+        // 
+        toolStripButton4.DisplayStyle = ToolStripItemDisplayStyle.Image;
+        toolStripButton4.Image = Resource.forCreate.Resource1.rectangle_fill;
+        toolStripButton4.ImageTransparentColor = Color.Magenta;
+        toolStripButton4.Name = "toolStripButton4";
+        toolStripButton4.Size = new Size(29, 29);
+        toolStripButton4.Text = "toolStripButton4";
+        // 
+        // toolStripButton5
+        // 
+        toolStripButton5.DisplayStyle = ToolStripItemDisplayStyle.Image;
+        toolStripButton5.Image = Resource.forCreate.Resource1.square;
+        toolStripButton5.ImageTransparentColor = Color.Magenta;
+        toolStripButton5.Name = "toolStripButton5";
+        toolStripButton5.Size = new Size(29, 29);
+        toolStripButton5.Text = "toolStripButton5";
+        // 
+        // Board_PB
+        // 
+        Board_PB.Dock = DockStyle.Fill;
+        Board_PB.Location = new Point(0, 60);
+        Board_PB.Name = "Board_PB";
+        Board_PB.Size = new Size(874, 402);
+        Board_PB.TabIndex = 2;
+        Board_PB.TabStop = false;
+        Board_PB.MouseDown += Form_Paint_MouseDown;
+        Board_PB.MouseMove += Board_PB_MouseMove;
+        Board_PB.MouseUp += Board_PB_MouseUp;
         // 
         // Form_Paint
         // 
         AutoScaleDimensions = new SizeF(9F, 20F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(1179, 518);
+        ClientSize = new Size(874, 462);
+        Controls.Add(Board_PB);
         Controls.Add(toolStrip1);
         Controls.Add(menuStrip_top);
         MainMenuStrip = menuStrip_top;
@@ -253,6 +354,7 @@ partial class Form_Paint
         menuStrip_top.PerformLayout();
         toolStrip1.ResumeLayout(false);
         toolStrip1.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)Board_PB).EndInit();
         ResumeLayout(false);
         PerformLayout();
     }
@@ -284,4 +386,15 @@ partial class Form_Paint
     private ToolStripMenuItem selector_rectangle;
     private ToolStripMenuItem selector_all;
     public ToolStripMenuItem selector_point;
+    private ToolStripButton bruch;
+    private ColorDialog colorDialog;
+    private FontDialog fontDialog1;
+    private ToolStripButton toolStripButton1;
+    private ToolStripButton selectColorSample;
+    private ToolStripButton color_selector;
+    private ToolStripButton toolStripButton2;
+    private ToolStripButton toolStripButton3;
+    private ToolStripButton toolStripButton4;
+    private ToolStripButton toolStripButton5;
+    private PictureBox Board_PB;
 }

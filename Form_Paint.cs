@@ -11,36 +11,19 @@ using System.Windows.Forms;
 namespace _9_1113;
 public partial class Form_Paint : Form
 {
-    // 선택자 전역 변수
-    private enum selectOptions : int
-    {
-        point,
-        rectangle,
-        all,
-    }
-    public int selectMode = (int)selectOptions.point;
+    public string handleTool = "brush";
     List<Point> selectedPoints = new List<Point>();
     List<RectangleF> rectangleFs = new List<RectangleF>();
 
     Bitmap Bitmap = new Bitmap(1920, 1080);
+    Pen myPen = new Pen(Color.Black, 5);
+    bool IsDrawing = false;
 
+    ColorDialog colorDlg = new ColorDialog();
+    Color selectedColor = Color.Black;
     public Form_Paint()
     {
         InitializeComponent();
-    }
-
-    private void panel_board_Paint(object sender, PaintEventArgs e)
-    {
-
-    }
-
-    private void panel_board_MouseDown(object sender, MouseEventArgs e)
-    {
-    }
-
-    private void panel_board_MouseUp(object sender, MouseEventArgs e)
-    {
-
     }
 
     private void selector_Click(object sender, EventArgs e)
@@ -48,10 +31,6 @@ public partial class Form_Paint : Form
         // 클릭 요소
         ToolStripMenuItem clickedItem = (ToolStripMenuItem)sender;
         if (clickedItem == null || string.IsNullOrEmpty(clickedItem.Name)) return;
-
-        // name 요소에서 '_' 뒤쪽 문자열 추출해서 enem으로 파싱
-        string[] nameParts = clickedItem.Name.ToString().Split('_');
-        selectOptions selectIdx = (selectOptions)Enum.Parse(typeof(selectOptions), nameParts[1]);
 
         // 부모 요소
         if (clickedItem.OwnerItem == null) return;
@@ -72,6 +51,49 @@ public partial class Form_Paint : Form
         parent.Image = clickedItem.Image;
 
         // 선택 모드 업데이트
-        selectMode = (int)selectIdx;
+        handleTool = clickedItem.Name;
+    }
+
+    private void color_selector_Click(object sender, EventArgs e)
+    {
+        // 대화 상자를 띄우고 사용자가 '확인'을 눌렀는지 확인
+        if (colorDlg.ShowDialog() == DialogResult.OK)
+        {
+            selectedColor = colorDlg.Color;
+            selectColorSample.BackColor = selectedColor;
+        }
+        else
+        {
+            // 사용자가 '취소'를 누르거나 창을 닫은 경우
+            // 특별한 동작 없음
+        }
+    }
+
+    private void Form_Paint_MouseDown(object sender, MouseEventArgs e)
+    {
+        if (handleTool == "brush") IsDrawing = true;
+        else if (handleTool.Contains("selector"))
+        {
+            selectedPoints.Add(e.Location);
+        }
+    }
+
+    private void Board_PB_MouseUp(object sender, MouseEventArgs e)
+    {
+        IsDrawing = false;
+
+    }
+
+    private void Board_PB_MouseMove(object sender, MouseEventArgs e)
+    {
+        if (IsDrawing)
+        {
+            Graphics Grp = Graphics.FromImage(Bitmap);
+            Grp.DrawRectangle(myPen, e.X, e.Y, 3, 1);
+        }
+    }
+
+    private void toolStripButton1_Click(object sender, EventArgs e)
+    {
     }
 }
