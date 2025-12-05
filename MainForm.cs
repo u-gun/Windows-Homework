@@ -141,7 +141,8 @@ namespace _9_1113
 
         private void Close_Click(object sender, EventArgs e)
         {
-
+            NewFileOpen_Click(sender, e);
+            this.Close();
         }
 
         private void Font_Click(object sender, EventArgs e)

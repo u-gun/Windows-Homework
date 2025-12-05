@@ -28,7 +28,6 @@ partial class Form_Paint
     /// </summary>
     private void InitializeComponent()
     {
-        components = new System.ComponentModel.Container();
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Paint));
         menuStrip_top = new MenuStrip();
         파일toolStripMenuItem = new ToolStripMenuItem();
@@ -37,6 +36,8 @@ partial class Form_Paint
         열기OToolStripMenuItem = new ToolStripMenuItem();
         저장SToolStripMenuItem = new ToolStripMenuItem();
         toolStripSeparator2 = new ToolStripSeparator();
+        인쇄PToolStripMenuItem = new ToolStripMenuItem();
+        미리보기VToolStripMenuItem = new ToolStripMenuItem();
         toolStripSeparator3 = new ToolStripSeparator();
         종료XToolStripMenuItem = new ToolStripMenuItem();
         편집EToolStripMenuItem = new ToolStripMenuItem();
@@ -62,14 +63,14 @@ partial class Form_Paint
         element = new ToolStripButton();
         fill = new ToolStripButton();
         toolView = new ToolStripLabel();
-        colorDialog = new ColorDialog();
-        fontDialog1 = new FontDialog();
+        colorDialog1 = new ColorDialog();
+        fontDlg = new FontDialog();
         Board_PB = new PictureBox();
-        openFileDialog1 = new OpenFileDialog();
-        saveFileDialog1 = new SaveFileDialog();
-        imageList1 = new ImageList(components);
-        인쇄PToolStripMenuItem = new ToolStripMenuItem();
-        미리보기VToolStripMenuItem = new ToolStripMenuItem();
+        openDlg = new OpenFileDialog();
+        saveDlg = new SaveFileDialog();
+        printDlg = new PrintDialog();
+        printPreviewDlg = new PrintPreviewDialog();
+        printDoc = new System.Drawing.Printing.PrintDocument();
         menuStrip_top.SuspendLayout();
         toolStrip1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)Board_PB).BeginInit();
@@ -98,6 +99,7 @@ partial class Form_Paint
         새파일NToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.N;
         새파일NToolStripMenuItem.Size = new Size(224, 26);
         새파일NToolStripMenuItem.Text = "새 파일(&N)";
+        새파일NToolStripMenuItem.Click += newFile_Click;
         // 
         // toolStripSeparator1
         // 
@@ -110,6 +112,7 @@ partial class Form_Paint
         열기OToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.O;
         열기OToolStripMenuItem.Size = new Size(224, 26);
         열기OToolStripMenuItem.Text = "열기(&O)";
+        열기OToolStripMenuItem.Click += open_Click;
         // 
         // 저장SToolStripMenuItem
         // 
@@ -117,11 +120,27 @@ partial class Form_Paint
         저장SToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.S;
         저장SToolStripMenuItem.Size = new Size(224, 26);
         저장SToolStripMenuItem.Text = "저장(&S)";
+        저장SToolStripMenuItem.Click += save_Click;
         // 
         // toolStripSeparator2
         // 
         toolStripSeparator2.Name = "toolStripSeparator2";
         toolStripSeparator2.Size = new Size(221, 6);
+        // 
+        // 인쇄PToolStripMenuItem
+        // 
+        인쇄PToolStripMenuItem.Name = "인쇄PToolStripMenuItem";
+        인쇄PToolStripMenuItem.ShortcutKeys = Keys.Alt | Keys.P;
+        인쇄PToolStripMenuItem.Size = new Size(224, 26);
+        인쇄PToolStripMenuItem.Text = "인쇄(&P)";
+        인쇄PToolStripMenuItem.Click += FilePrint_Click;
+        // 
+        // 미리보기VToolStripMenuItem
+        // 
+        미리보기VToolStripMenuItem.Name = "미리보기VToolStripMenuItem";
+        미리보기VToolStripMenuItem.Size = new Size(224, 26);
+        미리보기VToolStripMenuItem.Text = "미리보기(&V)";
+        미리보기VToolStripMenuItem.Click += FilePrintPreview_Click;
         // 
         // toolStripSeparator3
         // 
@@ -134,6 +153,7 @@ partial class Form_Paint
         종료XToolStripMenuItem.ShortcutKeys = Keys.Alt | Keys.F4;
         종료XToolStripMenuItem.Size = new Size(224, 26);
         종료XToolStripMenuItem.Text = "종료(&X)";
+        종료XToolStripMenuItem.Click += 종료XToolStripMenuItem_Click;
         // 
         // 편집EToolStripMenuItem
         // 
@@ -169,7 +189,7 @@ partial class Form_Paint
         오려두기XToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.X;
         오려두기XToolStripMenuItem.Size = new Size(266, 26);
         오려두기XToolStripMenuItem.Text = "오려두기(&X)";
-        오려두기XToolStripMenuItem.Click += crop_Click;
+        오려두기XToolStripMenuItem.Click += cut_Click;
         // 
         // 복사하기CToolStripMenuItem
         // 
@@ -177,6 +197,7 @@ partial class Form_Paint
         복사하기CToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.C;
         복사하기CToolStripMenuItem.Size = new Size(266, 26);
         복사하기CToolStripMenuItem.Text = "복사하기(&C)";
+        복사하기CToolStripMenuItem.Click += copy_Click;
         // 
         // 붙여넣기VToolStripMenuItem
         // 
@@ -184,6 +205,7 @@ partial class Form_Paint
         붙여넣기VToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.V;
         붙여넣기VToolStripMenuItem.Size = new Size(266, 26);
         붙여넣기VToolStripMenuItem.Text = "붙여넣기(&V)";
+        붙여넣기VToolStripMenuItem.Click += paste_Click;
         // 
         // toolStripSeparator5
         // 
@@ -196,6 +218,7 @@ partial class Form_Paint
         모두선택AToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.A;
         모두선택AToolStripMenuItem.Size = new Size(266, 26);
         모두선택AToolStripMenuItem.Text = "모두선택(&A)";
+        모두선택AToolStripMenuItem.Click += selectAll_Click;
         // 
         // toolStrip1
         // 
@@ -224,7 +247,7 @@ partial class Form_Paint
         selector_point.CheckState = CheckState.Checked;
         selector_point.Image = (Image)resources.GetObject("selector_point.Image");
         selector_point.Name = "selector_point";
-        selector_point.Size = new Size(229, 32);
+        selector_point.Size = new Size(157, 26);
         selector_point.Text = "선택";
         selector_point.TextAlign = ContentAlignment.MiddleRight;
         selector_point.Click += selector_Click;
@@ -234,7 +257,7 @@ partial class Form_Paint
         selector_rectangle.Image = (Image)resources.GetObject("selector_rectangle.Image");
         selector_rectangle.MergeIndex = 1;
         selector_rectangle.Name = "selector_rectangle";
-        selector_rectangle.Size = new Size(229, 32);
+        selector_rectangle.Size = new Size(157, 26);
         selector_rectangle.Text = "사각 선택";
         selector_rectangle.TextAlign = ContentAlignment.MiddleRight;
         selector_rectangle.Click += selector_Click;
@@ -244,7 +267,7 @@ partial class Form_Paint
         selector_all.Image = (Image)resources.GetObject("selector_all.Image");
         selector_all.MergeIndex = 2;
         selector_all.Name = "selector_all";
-        selector_all.Size = new Size(229, 32);
+        selector_all.Size = new Size(157, 26);
         selector_all.Text = "모두 선택";
         selector_all.Click += selector_Click;
         // 
@@ -317,7 +340,7 @@ partial class Form_Paint
         fill.Name = "fill";
         fill.Size = new Size(29, 29);
         fill.Text = "toolStripButton5";
-        fill.Click += fill_Click;
+        fill.Click += fillSelection_Click;
         // 
         // toolView
         // 
@@ -325,11 +348,12 @@ partial class Form_Paint
         toolView.DisplayStyle = ToolStripItemDisplayStyle.Text;
         toolView.ImageTransparentColor = Color.Magenta;
         toolView.Name = "toolView";
-        toolView.Size = new Size(207, 29);
+        toolView.Size = new Size(507, 29);
         toolView.Text = "Tool: ";
         // 
         // Board_PB
         // 
+        Board_PB.BackColor = Color.White;
         Board_PB.Dock = DockStyle.Fill;
         Board_PB.Location = new Point(0, 60);
         Board_PB.Name = "Board_PB";
@@ -341,28 +365,27 @@ partial class Form_Paint
         Board_PB.MouseUp += Board_PB_MouseUp;
         Board_PB.PreviewKeyDown += Board_PB_PreviewKeyDown;
         // 
-        // openFileDialog1
+        // openDlg
         // 
-        openFileDialog1.FileName = "openFileDialog1";
+        openDlg.FileName = "openFileDialog1";
         // 
-        // imageList1
+        // printDlg
         // 
-        imageList1.ColorDepth = ColorDepth.Depth32Bit;
-        imageList1.ImageSize = new Size(16, 16);
-        imageList1.TransparentColor = Color.Transparent;
+        printDlg.UseEXDialog = true;
         // 
-        // 인쇄PToolStripMenuItem
+        // printPreviewDlg
         // 
-        인쇄PToolStripMenuItem.Name = "인쇄PToolStripMenuItem";
-        인쇄PToolStripMenuItem.ShortcutKeys = Keys.Alt | Keys.P;
-        인쇄PToolStripMenuItem.Size = new Size(224, 26);
-        인쇄PToolStripMenuItem.Text = "인쇄(&P)";
+        printPreviewDlg.AutoScrollMargin = new Size(0, 0);
+        printPreviewDlg.AutoScrollMinSize = new Size(0, 0);
+        printPreviewDlg.ClientSize = new Size(400, 300);
+        printPreviewDlg.Enabled = true;
+        printPreviewDlg.Icon = (Icon)resources.GetObject("printPreviewDlg.Icon");
+        printPreviewDlg.Name = "printPreviewDlg";
+        printPreviewDlg.Visible = false;
         // 
-        // 미리보기VToolStripMenuItem
+        // printDoc
         // 
-        미리보기VToolStripMenuItem.Name = "미리보기VToolStripMenuItem";
-        미리보기VToolStripMenuItem.Size = new Size(224, 26);
-        미리보기VToolStripMenuItem.Text = "미리보기(&V)";
+        printDoc.PrintPage += printDoc_PrintPage;
         // 
         // Form_Paint
         // 
@@ -409,8 +432,8 @@ partial class Form_Paint
     private ToolStripMenuItem selector_all;
     public ToolStripMenuItem selector_point;
     private ToolStripButton bruch;
-    private ColorDialog colorDialog;
-    private FontDialog fontDialog1;
+    private ColorDialog colorDlg;
+    private FontDialog fontDlg;
     private ToolStripButton textBox;
     private ToolStripButton selectColorSample;
     private ToolStripButton color_selector;
@@ -419,11 +442,13 @@ partial class Form_Paint
     private ToolStripSeparator toolStripButton2;
     private ToolStripSeparator toolStripButton3;
     private ToolStripButton element;
-    private OpenFileDialog openFileDialog1;
-    private SaveFileDialog saveFileDialog1;
-    private ImageList imageList1;
+    private OpenFileDialog openDlg;
+    private SaveFileDialog saveDlg;
     private ToolStripLabel toolView;
     private ToolStripMenuItem 다시실행ToolStripMenuItem;
     private ToolStripMenuItem 인쇄PToolStripMenuItem;
     private ToolStripMenuItem 미리보기VToolStripMenuItem;
+    private PrintDialog printDlg;
+    private PrintPreviewDialog printPreviewDlg;
+    private System.Drawing.Printing.PrintDocument printDoc;
 }
