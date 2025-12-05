@@ -28,6 +28,7 @@ partial class Form_Paint
     /// </summary>
     private void InitializeComponent()
     {
+        components = new System.ComponentModel.Container();
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Paint));
         menuStrip_top = new MenuStrip();
         파일toolStripMenuItem = new ToolStripMenuItem();
@@ -55,16 +56,21 @@ partial class Form_Paint
         selector_rectangle = new ToolStripMenuItem();
         selector_all = new ToolStripMenuItem();
         toolStripButton2 = new ToolStripSeparator();
-        bruch = new ToolStripButton();
         selectColorSample = new ToolStripButton();
         color_selector = new ToolStripButton();
-        textBox = new ToolStripButton();
         toolStripButton3 = new ToolStripSeparator();
-        toolStripButton4 = new ToolStripButton();
-        toolStripButton5 = new ToolStripButton();
+        bruch = new ToolStripButton();
+        textBox = new ToolStripButton();
+        element = new ToolStripButton();
+        fill = new ToolStripButton();
+        toolView = new ToolStripLabel();
+        is_drawing = new ToolStripButton();
         colorDialog = new ColorDialog();
         fontDialog1 = new FontDialog();
         Board_PB = new PictureBox();
+        openFileDialog1 = new OpenFileDialog();
+        saveFileDialog1 = new SaveFileDialog();
+        imageList1 = new ImageList(components);
         menuStrip_top.SuspendLayout();
         toolStrip1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)Board_PB).BeginInit();
@@ -204,7 +210,7 @@ partial class Form_Paint
         // toolStrip1
         // 
         toolStrip1.ImageScalingSize = new Size(25, 25);
-        toolStrip1.Items.AddRange(new ToolStripItem[] { selector_option, toolStripButton2, bruch, selectColorSample, color_selector, textBox, toolStripButton3, toolStripButton4, toolStripButton5 });
+        toolStrip1.Items.AddRange(new ToolStripItem[] { selector_option, toolStripButton2, selectColorSample, color_selector, toolStripButton3, bruch, textBox, element, fill, toolView, is_drawing });
         toolStrip1.Location = new Point(0, 28);
         toolStrip1.Name = "toolStrip1";
         toolStrip1.Size = new Size(874, 32);
@@ -257,17 +263,6 @@ partial class Form_Paint
         toolStripButton2.Name = "toolStripButton2";
         toolStripButton2.Size = new Size(6, 32);
         // 
-        // bruch
-        // 
-        bruch.AutoToolTip = false;
-        bruch.DisplayStyle = ToolStripItemDisplayStyle.Image;
-        bruch.Image = (Image)resources.GetObject("bruch.Image");
-        bruch.ImageTransparentColor = Color.Magenta;
-        bruch.Name = "bruch";
-        bruch.Size = new Size(29, 29);
-        bruch.Text = "브러시 속성";
-        bruch.Click += select_brush_Click;
-        // 
         // selectColorSample
         // 
         selectColorSample.BackColor = Color.Black;
@@ -276,6 +271,7 @@ partial class Form_Paint
         selectColorSample.Name = "selectColorSample";
         selectColorSample.Size = new Size(29, 29);
         selectColorSample.Text = "color sample";
+        selectColorSample.Click += selectColorSample_Click;
         // 
         // color_selector
         // 
@@ -288,6 +284,22 @@ partial class Form_Paint
         color_selector.Text = "팔렛트";
         color_selector.Click += color_selector_Click;
         // 
+        // toolStripButton3
+        // 
+        toolStripButton3.Name = "toolStripButton3";
+        toolStripButton3.Size = new Size(6, 32);
+        // 
+        // bruch
+        // 
+        bruch.AutoToolTip = false;
+        bruch.DisplayStyle = ToolStripItemDisplayStyle.Image;
+        bruch.Image = (Image)resources.GetObject("bruch.Image");
+        bruch.ImageTransparentColor = Color.Magenta;
+        bruch.Name = "bruch";
+        bruch.Size = new Size(29, 29);
+        bruch.Text = "브러시 속성";
+        bruch.Click += select_brush_Click;
+        // 
         // textBox
         // 
         textBox.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -295,29 +307,44 @@ partial class Form_Paint
         textBox.ImageTransparentColor = Color.Magenta;
         textBox.Name = "textBox";
         textBox.Size = new Size(29, 29);
+        textBox.Click += textBox_Click;
         // 
-        // toolStripButton3
+        // element
         // 
-        toolStripButton3.Name = "toolStripButton3";
-        toolStripButton3.Size = new Size(6, 32);
+        element.DisplayStyle = ToolStripItemDisplayStyle.Image;
+        element.Image = (Image)resources.GetObject("element.Image");
+        element.ImageTransparentColor = Color.Magenta;
+        element.Name = "element";
+        element.Size = new Size(29, 29);
+        element.Click += element_Click;
+        element.MouseUp += element_MouseUp;
         // 
-        // toolStripButton4
+        // fill
         // 
-        toolStripButton4.DisplayStyle = ToolStripItemDisplayStyle.Image;
-        toolStripButton4.Image = (Image)resources.GetObject("toolStripButton4.Image");
-        toolStripButton4.ImageTransparentColor = Color.Magenta;
-        toolStripButton4.Name = "toolStripButton4";
-        toolStripButton4.Size = new Size(29, 29);
-        toolStripButton4.Text = "toolStripButton4";
+        fill.DisplayStyle = ToolStripItemDisplayStyle.Image;
+        fill.Image = (Image)resources.GetObject("fill.Image");
+        fill.ImageTransparentColor = Color.Magenta;
+        fill.Name = "fill";
+        fill.Size = new Size(29, 29);
+        fill.Text = "toolStripButton5";
+        fill.Click += fill_Click;
         // 
-        // toolStripButton5
+        // toolView
         // 
-        toolStripButton5.DisplayStyle = ToolStripItemDisplayStyle.Image;
-        toolStripButton5.Image = (Image)resources.GetObject("toolStripButton5.Image");
-        toolStripButton5.ImageTransparentColor = Color.Magenta;
-        toolStripButton5.Name = "toolStripButton5";
-        toolStripButton5.Size = new Size(29, 29);
-        toolStripButton5.Text = "toolStripButton5";
+        toolView.AutoSize = false;
+        toolView.DisplayStyle = ToolStripItemDisplayStyle.Text;
+        toolView.ImageTransparentColor = Color.Magenta;
+        toolView.Name = "toolView";
+        toolView.Size = new Size(207, 29);
+        toolView.Text = "Tool: ";
+        // 
+        // is_drawing
+        // 
+        is_drawing.DisplayStyle = ToolStripItemDisplayStyle.Text;
+        is_drawing.ImageTransparentColor = Color.Magenta;
+        is_drawing.Name = "is_drawing";
+        is_drawing.Size = new Size(29, 29);
+        is_drawing.MouseMove += is_drawing_MouseMove;
         // 
         // Board_PB
         // 
@@ -327,9 +354,20 @@ partial class Form_Paint
         Board_PB.Size = new Size(874, 402);
         Board_PB.TabIndex = 2;
         Board_PB.TabStop = false;
-        Board_PB.MouseDown += Form_Paint_MouseDown;
+        Board_PB.MouseDown += Board_PB_MouseDown;
         Board_PB.MouseMove += Board_PB_MouseMove;
         Board_PB.MouseUp += Board_PB_MouseUp;
+        Board_PB.PreviewKeyDown += Board_PB_PreviewKeyDown;
+        // 
+        // openFileDialog1
+        // 
+        openFileDialog1.FileName = "openFileDialog1";
+        // 
+        // imageList1
+        // 
+        imageList1.ColorDepth = ColorDepth.Depth32Bit;
+        imageList1.ImageSize = new Size(16, 16);
+        imageList1.TransparentColor = Color.Transparent;
         // 
         // Form_Paint
         // 
@@ -384,9 +422,14 @@ partial class Form_Paint
     private ToolStripButton textBox;
     private ToolStripButton selectColorSample;
     private ToolStripButton color_selector;
-    private ToolStripButton toolStripButton5;
+    private ToolStripButton fill;
     private PictureBox Board_PB;
     private ToolStripSeparator toolStripButton2;
     private ToolStripSeparator toolStripButton3;
-    private ToolStripButton toolStripButton4;
+    private ToolStripButton element;
+    private OpenFileDialog openFileDialog1;
+    private SaveFileDialog saveFileDialog1;
+    private ImageList imageList1;
+    private ToolStripLabel toolView;
+    private ToolStripButton is_drawing;
 }

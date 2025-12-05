@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,7 @@ public partial class Form_Paint : Form
     public Form_Paint()
     {
         InitializeComponent();
+
     }
 
     private void selector_Click(object sender, EventArgs e)
@@ -52,6 +54,9 @@ public partial class Form_Paint : Form
 
         // 선택 모드 업데이트
         handleTool = clickedItem.Name;
+
+        toolView.Text = "Tool: ";
+        toolView.Text = toolView.Text.Replace("Tool: ", "Tool: " + handleTool.ToString());
     }
 
     private void color_selector_Click(object sender, EventArgs e)
@@ -67,9 +72,12 @@ public partial class Form_Paint : Form
             // 사용자가 '취소'를 누르거나 창을 닫은 경우
             // 특별한 동작 없음
         }
+
+        toolView.Text = "Tool: ";
+        toolView.Text = toolView.Text.Replace("Tool: ", "Tool: " + handleTool.ToString());
     }
 
-    private void Form_Paint_MouseDown(object sender, MouseEventArgs e)
+    private void Board_PB_MouseDown(object sender, MouseEventArgs e)
     {
         if (handleTool == "brush") IsDrawing = true;
         else if (handleTool.Contains("selector"))
@@ -90,11 +98,140 @@ public partial class Form_Paint : Form
         {
             Graphics Grp = Graphics.FromImage(Bitmap);
             Grp.DrawRectangle(myPen, e.X, e.Y, 3, 1);
+            Board_PB.Image = Bitmap;
         }
     }
 
     private void select_brush_Click(object sender, EventArgs e)
     {
         handleTool = "brush";
+        toolView.Text = "Tool: ";
+        toolView.Text = toolView.Text.Replace("Tool: ", "Tool: " + handleTool.ToString());
+    }
+
+    private void textBox_Click(object sender, EventArgs e)
+    {
+        handleTool = "testBox";
+        toolView.Text = "Tool: ";
+        toolView.Text = toolView.Text.Replace("Tool: ", "Tool: " + handleTool.ToString());
+    }
+
+    private void element_Click(object sender, EventArgs e)
+    {
+        handleTool = "element";
+        toolView.Text = "Tool: ";
+        toolView.Text = toolView.Text.Replace("Tool: ", "Tool: " + handleTool.ToString());
+    }
+
+    private void fill_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void Board_PB_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+    {
+
+    }
+
+
+    private void is_drawing_MouseMove(object sender, MouseEventArgs e)
+    {
+        is_drawing.Text = IsDrawing.ToString();
+    }
+
+    private void selectColorSample_Click(object sender, EventArgs e)
+    {
+        ToolStripMenuItem box = (ToolStripMenuItem)sender;
+        myPen.Color = box.BackColor;
+    }
+
+    private void element_MouseUp(object sender, MouseEventArgs e)
+    {
+        if (handleTool == "element")
+        {
+            
+        }
+    }
+
+    public List<Point> GetPolygonCoordinates(IEnumerable<Point> points)
+    {
+        // 입력받은 IEnumerable<Point> (배열, 리스트 모두 가능)를 List로 변환하여 반환합니다.
+        return new List<Point>(points);
+    }
+
+    private void DrawMyPolygon(Graphics g)
+    {
+        Point[] polygonPoints = new Point[]
+        {
+        new Point(50, 50),
+        new Point(150, 50),
+        new Point(200, 150),
+        new Point(100, 200),
+        new Point(0, 150)
+        };
+
+        using (Pen blackPen = new Pen(Color.Black, 3))
+        {
+            // DrawPolygon 메서드는 마지막 꼭짓점에서 첫 번째 꼭짓점으로 자동으로 선을 이어 닫힌 다각형을 만듭니다.
+            g.DrawPolygon(blackPen, polygonPoints);
+        }
+    }
+
+    
+    /// <summary>
+    /// 두 다각형이 좌표 공간에서 겹치는지 여부를 반환합니다.
+    /// </summary>
+    /// <param name="polygonA">첫 번째 다각형의 꼭짓점 배열.</param>
+    /// <param name="polygonB">두 번째 다각형의 꼭짓점 배열.</param>
+    /// <returns>두 다각형이 겹치면 True, 아니면 False.</returns>
+    public bool DoPolygonsIntersect(Point[] polygonA, Point[] polygonB)
+    {
+        // GDI+의 GraphicsPath를 사용하여 다각형 영역을 정의합니다.
+        using (GraphicsPath pathA = new GraphicsPath())
+        using (GraphicsPath pathB = new GraphicsPath())
+        {
+            // 다각형 A의 경로를 추가
+            if (polygonA.Length >= 3)
+                pathA.AddPolygon(polygonA);
+
+            // 다각형 B의 경로를 추가
+            if (polygonB.Length >= 3)
+                pathB.AddPolygon(polygonB);
+
+            // A의 영역을 나타내는 Region 객체를 만듭니다.
+            Region regionA = new Region(pathA);
+
+            // RegionA와 PathB가 교차하는지 확인합니다.
+            // IntersectWith() 메서드는 regionA 자체를 변경하므로,
+            // 이를 테스트하는 목적으로 사용하기 위해 새로운 Region을 만들어야 합니다.
+            // 또는 IsVisible을 사용합니다. 여기서는 GetBounds와 IsVisible을 혼합 사용합니다.
+
+            // 1. 다각형 B의 경계를 사용하여 Region A와 교차하는지 테스트
+            RectangleF boundsB = pathB.GetBounds();
+
+            if (regionA.IsVisible(boundsB))
+            {
+                // 경계 상자가 겹치면 더 정밀하게 확인합니다.
+                // B의 꼭짓점 중 하나라도 A 영역 내에 있는지 확인합니다.
+                if (polygonB.Any(p => pathA.IsVisible(p)))
+                    return true;
+            }
+
+            // 2. 다각형 A의 경계를 사용하여 Region B와 교차하는지 테스트
+            Region regionB = new Region(pathB);
+            RectangleF boundsA = pathA.GetBounds();
+
+            if (regionB.IsVisible(boundsA))
+            {
+                if (polygonA.Any(p => pathB.IsVisible(p)))
+                    return true;
+            }
+
+            // 완전한 교차 감지를 위해서는 더 복잡한 SAT(Separating Axis Theorem) 알고리즘이 필요하지만,
+            // GDI+를 사용한 이 방법은 간단한 WinForms 환경에서 근사적인 충돌 감지에 유용합니다.
+
+            // 간단한 테스트: A의 바운딩 박스가 B의 바운딩 박스와 겹치는지 확인
+            return pathA.GetBounds().IntersectsWith(pathB.GetBounds());
+        }
     }
 }
