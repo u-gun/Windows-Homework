@@ -28,6 +28,7 @@ partial class Form_Paint
     /// </summary>
     private void InitializeComponent()
     {
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Paint));
         menuStrip_top = new MenuStrip();
         파일toolStripMenuItem = new ToolStripMenuItem();
         새파일NToolStripMenuItem = new ToolStripMenuItem();
@@ -53,12 +54,12 @@ partial class Form_Paint
         selector_point = new ToolStripMenuItem();
         selector_rectangle = new ToolStripMenuItem();
         selector_all = new ToolStripMenuItem();
+        toolStripButton2 = new ToolStripSeparator();
         bruch = new ToolStripButton();
         selectColorSample = new ToolStripButton();
         color_selector = new ToolStripButton();
-        toolStripButton1 = new ToolStripButton();
-        toolStripButton2 = new ToolStripButton();
-        toolStripButton3 = new ToolStripButton();
+        textBox = new ToolStripButton();
+        toolStripButton3 = new ToolStripSeparator();
         toolStripButton4 = new ToolStripButton();
         toolStripButton5 = new ToolStripButton();
         colorDialog = new ColorDialog();
@@ -203,7 +204,7 @@ partial class Form_Paint
         // toolStrip1
         // 
         toolStrip1.ImageScalingSize = new Size(25, 25);
-        toolStrip1.Items.AddRange(new ToolStripItem[] { selector_option, bruch, selectColorSample, color_selector, toolStripButton1, toolStripButton2, toolStripButton3, toolStripButton4, toolStripButton5 });
+        toolStrip1.Items.AddRange(new ToolStripItem[] { selector_option, toolStripButton2, bruch, selectColorSample, color_selector, textBox, toolStripButton3, toolStripButton4, toolStripButton5 });
         toolStrip1.Location = new Point(0, 28);
         toolStrip1.Name = "toolStrip1";
         toolStrip1.Size = new Size(874, 32);
@@ -215,7 +216,7 @@ partial class Form_Paint
         selector_option.AutoToolTip = false;
         selector_option.DisplayStyle = ToolStripItemDisplayStyle.Image;
         selector_option.DropDownItems.AddRange(new ToolStripItem[] { selector_point, selector_rectangle, selector_all });
-        selector_option.Image = Resource.forCreate.Resource1.selector;
+        selector_option.Image = (Image)resources.GetObject("selector_option.Image");
         selector_option.ImageTransparentColor = Color.Magenta;
         selector_option.MergeIndex = 0;
         selector_option.Name = "selector_option";
@@ -225,7 +226,7 @@ partial class Form_Paint
         // 
         selector_point.Checked = true;
         selector_point.CheckState = CheckState.Checked;
-        selector_point.Image = Resource.forCreate.Resource1.selector;
+        selector_point.Image = (Image)resources.GetObject("selector_point.Image");
         selector_point.Name = "selector_point";
         selector_point.Size = new Size(157, 26);
         selector_point.Text = "선택";
@@ -234,7 +235,7 @@ partial class Form_Paint
         // 
         // selector_rectangle
         // 
-        selector_rectangle.Image = Resource.forCreate.Resource1.selector_rectangle;
+        selector_rectangle.Image = (Image)resources.GetObject("selector_rectangle.Image");
         selector_rectangle.MergeIndex = 1;
         selector_rectangle.Name = "selector_rectangle";
         selector_rectangle.Size = new Size(157, 26);
@@ -244,22 +245,28 @@ partial class Form_Paint
         // 
         // selector_all
         // 
-        selector_all.Image = Resource.forCreate.Resource1.selector_all;
+        selector_all.Image = (Image)resources.GetObject("selector_all.Image");
         selector_all.MergeIndex = 2;
         selector_all.Name = "selector_all";
         selector_all.Size = new Size(157, 26);
         selector_all.Text = "모두 선택";
         selector_all.Click += selector_Click;
         // 
+        // toolStripButton2
+        // 
+        toolStripButton2.Name = "toolStripButton2";
+        toolStripButton2.Size = new Size(6, 32);
+        // 
         // bruch
         // 
         bruch.AutoToolTip = false;
         bruch.DisplayStyle = ToolStripItemDisplayStyle.Image;
-        bruch.Image = Resource.forCreate.Resource1.text;
+        bruch.Image = (Image)resources.GetObject("bruch.Image");
         bruch.ImageTransparentColor = Color.Magenta;
         bruch.Name = "bruch";
         bruch.Size = new Size(29, 29);
         bruch.Text = "브러시 속성";
+        bruch.Click += select_brush_Click;
         // 
         // selectColorSample
         // 
@@ -273,7 +280,7 @@ partial class Form_Paint
         // color_selector
         // 
         color_selector.DisplayStyle = ToolStripItemDisplayStyle.Image;
-        color_selector.Image = Resource.forCreate.Resource1.palette;
+        color_selector.Image = Properties.Resources.palette;
         color_selector.ImageTransparentColor = Color.Transparent;
         color_selector.Name = "color_selector";
         color_selector.Size = new Size(29, 29);
@@ -281,38 +288,23 @@ partial class Form_Paint
         color_selector.Text = "팔렛트";
         color_selector.Click += color_selector_Click;
         // 
-        // toolStripButton1
+        // textBox
         // 
-        toolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Image;
-        toolStripButton1.Image = Resource.forCreate.Resource1.brush;
-        toolStripButton1.ImageTransparentColor = Color.Magenta;
-        toolStripButton1.Name = "toolStripButton1";
-        toolStripButton1.Size = new Size(29, 29);
-        toolStripButton1.Text = "brush";
-        toolStripButton1.Click += toolStripButton1_Click;
-        // 
-        // toolStripButton2
-        // 
-        toolStripButton2.DisplayStyle = ToolStripItemDisplayStyle.Image;
-        toolStripButton2.Image = Resource.forCreate.Resource1.nodes;
-        toolStripButton2.ImageTransparentColor = Color.Magenta;
-        toolStripButton2.Name = "toolStripButton2";
-        toolStripButton2.Size = new Size(29, 29);
-        toolStripButton2.Text = "toolStripButton2";
+        textBox.DisplayStyle = ToolStripItemDisplayStyle.Image;
+        textBox.Image = Properties.Resources.text1;
+        textBox.ImageTransparentColor = Color.Magenta;
+        textBox.Name = "textBox";
+        textBox.Size = new Size(29, 29);
         // 
         // toolStripButton3
         // 
-        toolStripButton3.DisplayStyle = ToolStripItemDisplayStyle.Image;
-        toolStripButton3.Image = Resource.forCreate.Resource1.rectangle;
-        toolStripButton3.ImageTransparentColor = Color.Magenta;
         toolStripButton3.Name = "toolStripButton3";
-        toolStripButton3.Size = new Size(29, 29);
-        toolStripButton3.Text = "toolStripButton3";
+        toolStripButton3.Size = new Size(6, 32);
         // 
         // toolStripButton4
         // 
         toolStripButton4.DisplayStyle = ToolStripItemDisplayStyle.Image;
-        toolStripButton4.Image = Resource.forCreate.Resource1.rectangle_fill;
+        toolStripButton4.Image = Properties.Resources.nodes;
         toolStripButton4.ImageTransparentColor = Color.Magenta;
         toolStripButton4.Name = "toolStripButton4";
         toolStripButton4.Size = new Size(29, 29);
@@ -321,7 +313,7 @@ partial class Form_Paint
         // toolStripButton5
         // 
         toolStripButton5.DisplayStyle = ToolStripItemDisplayStyle.Image;
-        toolStripButton5.Image = Resource.forCreate.Resource1.square;
+        toolStripButton5.Image = Properties.Resources.fill;
         toolStripButton5.ImageTransparentColor = Color.Magenta;
         toolStripButton5.Name = "toolStripButton5";
         toolStripButton5.Size = new Size(29, 29);
@@ -389,12 +381,12 @@ partial class Form_Paint
     private ToolStripButton bruch;
     private ColorDialog colorDialog;
     private FontDialog fontDialog1;
-    private ToolStripButton toolStripButton1;
+    private ToolStripButton textBox;
     private ToolStripButton selectColorSample;
     private ToolStripButton color_selector;
-    private ToolStripButton toolStripButton2;
-    private ToolStripButton toolStripButton3;
-    private ToolStripButton toolStripButton4;
     private ToolStripButton toolStripButton5;
     private PictureBox Board_PB;
+    private ToolStripSeparator toolStripButton2;
+    private ToolStripSeparator toolStripButton3;
+    private ToolStripButton toolStripButton4;
 }

@@ -93,7 +93,8 @@ public partial class Form_Paint : Form
         }
     }
 
-    private void toolStripButton1_Click(object sender, EventArgs e)
+    private void select_brush_Click(object sender, EventArgs e)
     {
+        handleTool = "brush";
     }
 }
