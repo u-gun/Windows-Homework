@@ -228,20 +228,5 @@ namespace _9_1113
             CF_paint.ShowDialog();
             this.Show();
         }
-
-        private void 격투게임도트사전ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void 어둠미로MToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void 지뢰찾기ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

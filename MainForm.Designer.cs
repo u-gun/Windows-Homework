@@ -80,9 +80,6 @@
             장ToolStripMenuItem4 = new ToolStripMenuItem();
             창WToolStripMenuItem = new ToolStripMenuItem();
             그림판PToolStripMenuItem = new ToolStripMenuItem();
-            격투게임도트사전ToolStripMenuItem = new ToolStripMenuItem();
-            어둠미로MToolStripMenuItem = new ToolStripMenuItem();
-            지뢰찾기ToolStripMenuItem = new ToolStripMenuItem();
             도움말HToolStripMenuItem = new ToolStripMenuItem();
             매뉴얼MToolStripMenuItem = new ToolStripMenuItem();
             제작자PToolStripMenuItem = new ToolStripMenuItem();
@@ -324,14 +321,14 @@
             // 장ToolStripMenuItem
             // 
             장ToolStripMenuItem.Name = "장ToolStripMenuItem";
-            장ToolStripMenuItem.Size = new Size(224, 26);
+            장ToolStripMenuItem.Size = new Size(123, 26);
             장ToolStripMenuItem.Text = "7장";
             장ToolStripMenuItem.Click += modal_7page_Click;
             // 
             // 장ToolStripMenuItem1
             // 
             장ToolStripMenuItem1.Name = "장ToolStripMenuItem1";
-            장ToolStripMenuItem1.Size = new Size(224, 26);
+            장ToolStripMenuItem1.Size = new Size(123, 26);
             장ToolStripMenuItem1.Text = "8장";
             장ToolStripMenuItem1.Click += modaless_8page_Click;
             // 
@@ -339,7 +336,7 @@
             // 
             장ToolStripMenuItem2.DropDownItems.AddRange(new ToolStripItem[] { 마우스ToolStripMenuItem, 키보드ToolStripMenuItem });
             장ToolStripMenuItem2.Name = "장ToolStripMenuItem2";
-            장ToolStripMenuItem2.Size = new Size(224, 26);
+            장ToolStripMenuItem2.Size = new Size(123, 26);
             장ToolStripMenuItem2.Text = "10장";
             // 
             // 마우스ToolStripMenuItem
@@ -387,20 +384,20 @@
             // 장ToolStripMenuItem3
             // 
             장ToolStripMenuItem3.Name = "장ToolStripMenuItem3";
-            장ToolStripMenuItem3.Size = new Size(224, 26);
+            장ToolStripMenuItem3.Size = new Size(123, 26);
             장ToolStripMenuItem3.Text = "11장";
             장ToolStripMenuItem3.Click += _11ToolStripMenuItem3_Click;
             // 
             // 장ToolStripMenuItem4
             // 
             장ToolStripMenuItem4.Name = "장ToolStripMenuItem4";
-            장ToolStripMenuItem4.Size = new Size(224, 26);
+            장ToolStripMenuItem4.Size = new Size(123, 26);
             장ToolStripMenuItem4.Text = "12장";
             장ToolStripMenuItem4.Click += _12ToolStripMenuItem4_Click;
             // 
             // 창WToolStripMenuItem
             // 
-            창WToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 그림판PToolStripMenuItem, 격투게임도트사전ToolStripMenuItem, 어둠미로MToolStripMenuItem, 지뢰찾기ToolStripMenuItem });
+            창WToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 그림판PToolStripMenuItem });
             창WToolStripMenuItem.Name = "창WToolStripMenuItem";
             창WToolStripMenuItem.Size = new Size(73, 24);
             창WToolStripMenuItem.Text = "창작(&C)";
@@ -412,27 +409,6 @@
             그림판PToolStripMenuItem.Text = "그림판(&P)";
             그림판PToolStripMenuItem.Click += 그림판PToolStripMenuItem_Click;
             // 
-            // 격투게임도트사전ToolStripMenuItem
-            // 
-            격투게임도트사전ToolStripMenuItem.Name = "격투게임도트사전ToolStripMenuItem";
-            격투게임도트사전ToolStripMenuItem.Size = new Size(224, 26);
-            격투게임도트사전ToolStripMenuItem.Text = "격투게임 도트 사전";
-            격투게임도트사전ToolStripMenuItem.Click += 격투게임도트사전ToolStripMenuItem_Click;
-            // 
-            // 어둠미로MToolStripMenuItem
-            // 
-            어둠미로MToolStripMenuItem.Name = "어둠미로MToolStripMenuItem";
-            어둠미로MToolStripMenuItem.Size = new Size(224, 26);
-            어둠미로MToolStripMenuItem.Text = "어둠 미로";
-            어둠미로MToolStripMenuItem.Click += 어둠미로MToolStripMenuItem_Click;
-            // 
-            // 지뢰찾기ToolStripMenuItem
-            // 
-            지뢰찾기ToolStripMenuItem.Name = "지뢰찾기ToolStripMenuItem";
-            지뢰찾기ToolStripMenuItem.Size = new Size(224, 26);
-            지뢰찾기ToolStripMenuItem.Text = "지뢰찾기";
-            지뢰찾기ToolStripMenuItem.Click += 지뢰찾기ToolStripMenuItem_Click;
-            // 
             // 도움말HToolStripMenuItem
             // 
             도움말HToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 매뉴얼MToolStripMenuItem, 제작자PToolStripMenuItem });
@@ -443,14 +419,14 @@
             // 매뉴얼MToolStripMenuItem
             // 
             매뉴얼MToolStripMenuItem.Name = "매뉴얼MToolStripMenuItem";
-            매뉴얼MToolStripMenuItem.Size = new Size(224, 26);
+            매뉴얼MToolStripMenuItem.Size = new Size(161, 26);
             매뉴얼MToolStripMenuItem.Text = "매뉴얼(&M)";
             매뉴얼MToolStripMenuItem.Click += Manual_Click;
             // 
             // 제작자PToolStripMenuItem
             // 
             제작자PToolStripMenuItem.Name = "제작자PToolStripMenuItem";
-            제작자PToolStripMenuItem.Size = new Size(224, 26);
+            제작자PToolStripMenuItem.Size = new Size(161, 26);
             제작자PToolStripMenuItem.Text = "제작자(&P)";
             제작자PToolStripMenuItem.Click += Producer_Click;
             // 
@@ -525,8 +501,5 @@
         private ToolStripMenuItem 기본ToolStripMenuItem1;
         private ToolStripMenuItem 응용ToolStripMenuItem1;
         private ToolStripMenuItem 그림판PToolStripMenuItem;
-        private ToolStripMenuItem 격투게임도트사전ToolStripMenuItem;
-        private ToolStripMenuItem 어둠미로MToolStripMenuItem;
-        private ToolStripMenuItem 지뢰찾기ToolStripMenuItem;
     }
 }
