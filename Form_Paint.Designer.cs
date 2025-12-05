@@ -280,7 +280,7 @@ partial class Form_Paint
         // color_selector
         // 
         color_selector.DisplayStyle = ToolStripItemDisplayStyle.Image;
-        color_selector.Image = Properties.Resources.palette;
+        color_selector.Image = (Image)resources.GetObject("color_selector.Image");
         color_selector.ImageTransparentColor = Color.Transparent;
         color_selector.Name = "color_selector";
         color_selector.Size = new Size(29, 29);
@@ -291,7 +291,7 @@ partial class Form_Paint
         // textBox
         // 
         textBox.DisplayStyle = ToolStripItemDisplayStyle.Image;
-        textBox.Image = Properties.Resources.text1;
+        textBox.Image = (Image)resources.GetObject("textBox.Image");
         textBox.ImageTransparentColor = Color.Magenta;
         textBox.Name = "textBox";
         textBox.Size = new Size(29, 29);
@@ -304,7 +304,7 @@ partial class Form_Paint
         // toolStripButton4
         // 
         toolStripButton4.DisplayStyle = ToolStripItemDisplayStyle.Image;
-        toolStripButton4.Image = Properties.Resources.nodes;
+        toolStripButton4.Image = (Image)resources.GetObject("toolStripButton4.Image");
         toolStripButton4.ImageTransparentColor = Color.Magenta;
         toolStripButton4.Name = "toolStripButton4";
         toolStripButton4.Size = new Size(29, 29);
@@ -313,7 +313,7 @@ partial class Form_Paint
         // toolStripButton5
         // 
         toolStripButton5.DisplayStyle = ToolStripItemDisplayStyle.Image;
-        toolStripButton5.Image = Properties.Resources.fill;
+        toolStripButton5.Image = (Image)resources.GetObject("toolStripButton5.Image");
         toolStripButton5.ImageTransparentColor = Color.Magenta;
         toolStripButton5.Name = "toolStripButton5";
         toolStripButton5.Size = new Size(29, 29);
