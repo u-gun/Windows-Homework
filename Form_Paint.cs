@@ -8,20 +8,28 @@ namespace _9_1113;
 public partial class Form_Paint : Form
 {
     public string handleTool = "brush";
+
+    // 선택 영역
     Point selectionStartPoint = new Point();
     Point selectionEndPoint = new Point();
 
+    // board layer
     Bitmap Bitmap = new Bitmap(1920, 1080);
     Pen myPen = new Pen(Color.Black, 5);
+    Pen eraserPen = new Pen(Color.White, 5);
+
+    // 조작 플러그
     bool IsDrawing = false;
     bool IsSelecting = false;
 
+    private Point lastPoint; // 이전 마우스 위치 저장
     ColorDialog colorDialog1 = new ColorDialog();
     Color selectedColor = Color.Black;
 
-    // --- [추가된 필드: Undo/Redo 및 선택/클립보드] ---
+    // ----------------- [Undo/Redo] ------------------
     private Stack<Bitmap> undoStack = new Stack<Bitmap>();
     private Stack<Bitmap> redoStack = new Stack<Bitmap>();
+    // ---------------- [선택/클립보드] ----------------
     private Rectangle selectionRectangle = Rectangle.Empty; // 현재 선택된 영역
     private Bitmap clipboardBitmap = null; // 복사/잘라내기된 이미지 데이터
     // ------------------------------------------------
@@ -29,13 +37,19 @@ public partial class Form_Paint : Form
     public Form_Paint()
     {
         InitializeComponent();
-
+        updateToolView();
         if (Board_PB != null)
         {
             Board_PB.Paint += Board_PB_Paint;
             Board_PB.PreviewKeyDown += Board_PB_PreviewKeyDown;
             Board_PB.Select(); // PictureBox가 키 이벤트를 받도록 포커스 설정
         }
+
+        // --- 펜 속성 초기화 (부드러운 선/브러시 효과) ---
+        eraserPen.StartCap = myPen.StartCap = LineCap.Round;
+        eraserPen.EndCap = myPen.EndCap = LineCap.Round;
+        eraserPen.LineJoin = myPen.LineJoin = LineJoin.Round;
+
 
         // 초기 상태 저장
         SaveState(false);
@@ -54,10 +68,7 @@ public partial class Form_Paint : Form
         undoStack.Push((Bitmap)Bitmap.Clone());
 
         // 새로운 작업이므로 Redo 스택은 지웁니다.
-        if (clearRedo)
-        {
-            redoStack.Clear();
-        }
+        if (clearRedo) redoStack.Clear();
 
         // 선택적: 최대 Undo 단계 제한 로직 추가 가능
     }
@@ -127,6 +138,7 @@ public partial class Form_Paint : Form
         }
     }
 
+    // 화살표 키로 조작
     private void Board_PB_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
     {
         const int moveStep = 5; // 이동 단위
@@ -289,12 +301,7 @@ public partial class Form_Paint : Form
     }
 
 
-    // =======================================================
-    // [4] 기존 이벤트 핸들러 수정
-    // =======================================================
-
-    // (기존 selector_Click, color_selector_Click, select_brush_Click, textBox_Click, element_Click, fill_Click은 유지)
-
+    // 도구 버튼들
     private void selector_Click(object sender, EventArgs e)
     {
         // 클릭 요소
@@ -326,6 +333,26 @@ public partial class Form_Paint : Form
         toolView.Text = toolView.Text.Replace("Tool: ", "Tool: " + handleTool.ToString());
     }
 
+    public void selectAll_Click(object sender, EventArgs e)
+    {
+        if (Bitmap != null)
+        {
+            selectionRectangle = new Rectangle(0, 0, Bitmap.Width, Bitmap.Height);
+
+            // 도구 모드를 선택 모드로 유지합니다. (필요하다면 "selector"와 같은 적절한 이름으로 설정)
+            // handleTool = "selector"; 
+            // toolView.Text = "Tool: " + handleTool; // UI 업데이트
+
+            Board_PB.Invalidate();
+        }
+    }
+
+    private void updateToolView()
+    {
+        toolView.Text = "Tool: ";
+        toolView.Text = toolView.Text.Replace("Tool: ", "Tool: " + handleTool.ToString());
+    }
+
     private void color_selector_Click(object sender, EventArgs e)
     {
         // 대화 상자를 띄우고 사용자가 '확인'을 눌렀는지 확인
@@ -335,16 +362,40 @@ public partial class Form_Paint : Form
             selectColorSample.BackColor = selectedColor;
             myPen.Color = selectedColor; // 펜 색상도 업데이트
         }
-        // ... (이후 로직은 그대로)
-        toolView.Text = "Tool: ";
-        toolView.Text = toolView.Text.Replace("Tool: ", "Tool: " + handleTool.ToString());
+        updateToolView();
     }
+
+    // brush 두께 조작
+    private void brushThicknessComboBox_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (brushThicknessComboBox.SelectedItem != null &&
+            float.TryParse(brushThicknessComboBox.SelectedItem.ToString(), out float newWidth))
+        {
+            myPen.Width = newWidth;
+            eraserPen.Width = newWidth;
+        }
+    }
+
+    private void brushThicknessComboBox_LostFocus(object sender, EventArgs e)
+    {
+        // 사용자가 콤보박스에 직접 타이핑 후 포커스를 잃었을 때 처리
+        if (float.TryParse(brushThicknessComboBox.Text, out float customWidth) && customWidth > 0)
+        {
+            myPen.Width = customWidth;
+            eraserPen.Width = customWidth;
+        }
+        else brushThicknessComboBox.Text = myPen.Width.ToString(); // 유효하지 않은 값이면 현재 두께를 다시 표시
+    }
+
+    // 마우스 동작
 
     private void Board_PB_MouseDown(object sender, MouseEventArgs e)
     {
-        if (handleTool == "brush")
+        if (handleTool == "brush" || handleTool == "eraser")
         {
             IsDrawing = true;
+            lastPoint = e.Location; // 브러시 시작 시 이전 마우스 위치 저장
+
             // 브러시 시작 시 이전에 남아있던 선택 영역은 초기화
             selectionRectangle = Rectangle.Empty;
             Board_PB.Invalidate();
@@ -362,6 +413,15 @@ public partial class Form_Paint : Form
         else if (handleTool == "selector_move_paste" && selectionRectangle.Contains(e.Location))
         {
             // TODO: 마우스 다운 시 붙여넣기된 이미지 이동 시작 로직 추가 (선택 사항)
+        }
+        else if (handleTool == "dropper") // 스포이드 기능
+        {
+            selectedColor = Bitmap.GetPixel(e.X, e.Y);
+            selectColorSample.BackColor = selectedColor;
+            myPen.Color = selectedColor;
+
+            handleTool = "brush";
+
         }
     }
 
@@ -389,7 +449,12 @@ public partial class Form_Paint : Form
         if (IsDrawing)
         {
             Graphics Grp = Graphics.FromImage(Bitmap);
-            Grp.DrawRectangle(myPen, e.X, e.Y, 3, 1);
+            if (handleTool == "eraser")
+            {
+                Grp.DrawLine(eraserPen, lastPoint, e.Location);
+            }
+            else Grp.DrawLine(myPen, lastPoint, e.Location);
+            lastPoint = e.Location;
             Board_PB.Image = Bitmap;
         }
         else if (IsSelecting)
@@ -559,9 +624,22 @@ public partial class Form_Paint : Form
         }
     }
 
+    /// <summary>
+    /// 두 점을 사용하여 시작점과 크기가 양수인 Rectangle을 반환합니다.
+    /// </summary>
+    private Rectangle GetNormalizedRectangle(Point startPoint, Point endPoint)
+    {
+        return new Rectangle(
+            Math.Min(startPoint.X, endPoint.X),
+            Math.Min(startPoint.Y, endPoint.Y),
+            Math.Abs(startPoint.X - endPoint.X),
+            Math.Abs(startPoint.Y - endPoint.Y)
+        );
+    }
+
     private void newFile_Click(object sender, EventArgs e)
     {
-        if(ask_fileSave()) save_Click(sender, e);
+        if (ask_fileSave()) save_Click(sender, e);
 
         // 기존 비트맵 리소스 해제 (메모리 누수 방지)
         if (Bitmap != null) Bitmap.Dispose();
@@ -633,6 +711,8 @@ public partial class Form_Paint : Form
         }
     }
 
+
+    // printer logic
     private void printDoc_PrintPage(object sender, PrintPageEventArgs e)
     {
         // 인쇄 영역의 크기와 위치를 설정합니다.
@@ -707,9 +787,10 @@ public partial class Form_Paint : Form
         }
     }
 
-    private void 종료XToolStripMenuItem_Click(object sender, EventArgs e)
+    // closer logic
+    private void closer_Click(object sender, EventArgs e)
     {
-        if(ask_fileSave())
+        if (ask_fileSave())
         {
             save_Click(sender, e);
         }
@@ -723,27 +804,12 @@ public partial class Form_Paint : Form
             MessageBoxDefaultButton.Button2) == DialogResult.Yes)
         {
             return true;
-        } else
+        }
+        else
         {
             return false;
         }
     }
-
-
-    public void selectAll_Click(object sender, EventArgs e)
-    {
-        if (Bitmap != null)
-        {
-            selectionRectangle = new Rectangle(0, 0, Bitmap.Width, Bitmap.Height);
-
-            // 도구 모드를 선택 모드로 유지합니다. (필요하다면 "selector"와 같은 적절한 이름으로 설정)
-            // handleTool = "selector"; 
-            // toolView.Text = "Tool: " + handleTool; // UI 업데이트
-
-            Board_PB.Invalidate();
-        }
-    }
-
 
     public void save_Click(object sender, EventArgs e)
     {
@@ -786,5 +852,24 @@ public partial class Form_Paint : Form
                 MessageBox.Show($"파일 저장 오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+    }
+
+    private void Formcloser_Click(object sender, FormClosedEventArgs e)
+    {
+        closer_Click(sender, e);
+    }
+
+    private void getColoe_Click(object sender, EventArgs e)
+    {
+        handleTool = "dropper";
+
+        updateToolView();
+    }
+
+    private void eraser_Click(object sender, EventArgs e)
+    {
+        handleTool = "eraser";
+
+        updateToolView();
     }
 }

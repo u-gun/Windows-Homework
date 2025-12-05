@@ -54,12 +54,16 @@ partial class Form_Paint
         selector_point = new ToolStripMenuItem();
         selector_rectangle = new ToolStripMenuItem();
         selector_all = new ToolStripMenuItem();
-        toolStripButton2 = new ToolStripSeparator();
+        aDividingLine1 = new ToolStripSeparator();
         selectColorSample = new ToolStripButton();
         color_selector = new ToolStripButton();
-        toolStripButton3 = new ToolStripSeparator();
+        getColoe = new ToolStripButton();
+        aDividingLine2 = new ToolStripSeparator();
+        eraser = new ToolStripButton();
         bruch = new ToolStripButton();
+        brushThicknessComboBox = new ToolStripComboBox();
         textBox = new ToolStripButton();
+        aDividingLine3 = new ToolStripSeparator();
         element = new ToolStripButton();
         fill = new ToolStripButton();
         toolView = new ToolStripLabel();
@@ -97,20 +101,20 @@ partial class Form_Paint
         // 
         새파일NToolStripMenuItem.Name = "새파일NToolStripMenuItem";
         새파일NToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.N;
-        새파일NToolStripMenuItem.Size = new Size(224, 26);
+        새파일NToolStripMenuItem.Size = new Size(218, 26);
         새파일NToolStripMenuItem.Text = "새 파일(&N)";
         새파일NToolStripMenuItem.Click += newFile_Click;
         // 
         // toolStripSeparator1
         // 
         toolStripSeparator1.Name = "toolStripSeparator1";
-        toolStripSeparator1.Size = new Size(221, 6);
+        toolStripSeparator1.Size = new Size(215, 6);
         // 
         // 열기OToolStripMenuItem
         // 
         열기OToolStripMenuItem.Name = "열기OToolStripMenuItem";
         열기OToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.O;
-        열기OToolStripMenuItem.Size = new Size(224, 26);
+        열기OToolStripMenuItem.Size = new Size(218, 26);
         열기OToolStripMenuItem.Text = "열기(&O)";
         열기OToolStripMenuItem.Click += open_Click;
         // 
@@ -118,42 +122,42 @@ partial class Form_Paint
         // 
         저장SToolStripMenuItem.Name = "저장SToolStripMenuItem";
         저장SToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.S;
-        저장SToolStripMenuItem.Size = new Size(224, 26);
+        저장SToolStripMenuItem.Size = new Size(218, 26);
         저장SToolStripMenuItem.Text = "저장(&S)";
         저장SToolStripMenuItem.Click += save_Click;
         // 
         // toolStripSeparator2
         // 
         toolStripSeparator2.Name = "toolStripSeparator2";
-        toolStripSeparator2.Size = new Size(221, 6);
+        toolStripSeparator2.Size = new Size(215, 6);
         // 
         // 인쇄PToolStripMenuItem
         // 
         인쇄PToolStripMenuItem.Name = "인쇄PToolStripMenuItem";
         인쇄PToolStripMenuItem.ShortcutKeys = Keys.Alt | Keys.P;
-        인쇄PToolStripMenuItem.Size = new Size(224, 26);
+        인쇄PToolStripMenuItem.Size = new Size(218, 26);
         인쇄PToolStripMenuItem.Text = "인쇄(&P)";
         인쇄PToolStripMenuItem.Click += FilePrint_Click;
         // 
         // 미리보기VToolStripMenuItem
         // 
         미리보기VToolStripMenuItem.Name = "미리보기VToolStripMenuItem";
-        미리보기VToolStripMenuItem.Size = new Size(224, 26);
+        미리보기VToolStripMenuItem.Size = new Size(218, 26);
         미리보기VToolStripMenuItem.Text = "미리보기(&V)";
         미리보기VToolStripMenuItem.Click += FilePrintPreview_Click;
         // 
         // toolStripSeparator3
         // 
         toolStripSeparator3.Name = "toolStripSeparator3";
-        toolStripSeparator3.Size = new Size(221, 6);
+        toolStripSeparator3.Size = new Size(215, 6);
         // 
         // 종료XToolStripMenuItem
         // 
         종료XToolStripMenuItem.Name = "종료XToolStripMenuItem";
         종료XToolStripMenuItem.ShortcutKeys = Keys.Alt | Keys.F4;
-        종료XToolStripMenuItem.Size = new Size(224, 26);
+        종료XToolStripMenuItem.Size = new Size(218, 26);
         종료XToolStripMenuItem.Text = "종료(&X)";
-        종료XToolStripMenuItem.Click += 종료XToolStripMenuItem_Click;
+        종료XToolStripMenuItem.Click += closer_Click;
         // 
         // 편집EToolStripMenuItem
         // 
@@ -223,7 +227,7 @@ partial class Form_Paint
         // toolStrip1
         // 
         toolStrip1.ImageScalingSize = new Size(25, 25);
-        toolStrip1.Items.AddRange(new ToolStripItem[] { selector_option, toolStripButton2, selectColorSample, color_selector, toolStripButton3, bruch, textBox, element, fill, toolView });
+        toolStrip1.Items.AddRange(new ToolStripItem[] { selector_option, aDividingLine1, selectColorSample, color_selector, getColoe, aDividingLine2, eraser, bruch, brushThicknessComboBox, textBox, aDividingLine3, element, fill, toolView });
         toolStrip1.Location = new Point(0, 28);
         toolStrip1.Name = "toolStrip1";
         toolStrip1.Size = new Size(874, 32);
@@ -271,10 +275,10 @@ partial class Form_Paint
         selector_all.Text = "모두 선택";
         selector_all.Click += selector_Click;
         // 
-        // toolStripButton2
+        // aDividingLine1
         // 
-        toolStripButton2.Name = "toolStripButton2";
-        toolStripButton2.Size = new Size(6, 32);
+        aDividingLine1.Name = "aDividingLine1";
+        aDividingLine1.Size = new Size(6, 32);
         // 
         // selectColorSample
         // 
@@ -284,6 +288,7 @@ partial class Form_Paint
         selectColorSample.Name = "selectColorSample";
         selectColorSample.Size = new Size(29, 29);
         selectColorSample.Text = "color sample";
+        selectColorSample.ToolTipText = "현제 색상";
         selectColorSample.Click += selectColorSample_Click;
         // 
         // color_selector
@@ -295,12 +300,33 @@ partial class Form_Paint
         color_selector.Size = new Size(29, 29);
         color_selector.Tag = "colorDialog_front";
         color_selector.Text = "팔렛트";
+        color_selector.ToolTipText = "팔렛트 색상 지정후 왼쪽 색상 클릭";
         color_selector.Click += color_selector_Click;
         // 
-        // toolStripButton3
+        // getColoe
         // 
-        toolStripButton3.Name = "toolStripButton3";
-        toolStripButton3.Size = new Size(6, 32);
+        getColoe.DisplayStyle = ToolStripItemDisplayStyle.Image;
+        getColoe.Image = (Image)resources.GetObject("getColoe.Image");
+        getColoe.ImageTransparentColor = Color.Magenta;
+        getColoe.Name = "getColoe";
+        getColoe.Size = new Size(29, 29);
+        getColoe.Text = "색상추출";
+        getColoe.Click += getColoe_Click;
+        // 
+        // aDividingLine2
+        // 
+        aDividingLine2.Name = "aDividingLine2";
+        aDividingLine2.Size = new Size(6, 32);
+        // 
+        // eraser
+        // 
+        eraser.DisplayStyle = ToolStripItemDisplayStyle.Image;
+        eraser.Image = (Image)resources.GetObject("eraser.Image");
+        eraser.ImageTransparentColor = Color.Magenta;
+        eraser.Name = "eraser";
+        eraser.Size = new Size(29, 29);
+        eraser.Text = "지우개";
+        eraser.Click += eraser_Click;
         // 
         // bruch
         // 
@@ -313,6 +339,16 @@ partial class Form_Paint
         bruch.Text = "브러시 속성";
         bruch.Click += select_brush_Click;
         // 
+        // brushThicknessComboBox
+        // 
+        brushThicknessComboBox.AutoSize = false;
+        brushThicknessComboBox.DropDownWidth = 55;
+        brushThicknessComboBox.Items.AddRange(new object[] { "1", "3", "5", "10", "15", "20" });
+        brushThicknessComboBox.Name = "brushThicknessComboBox";
+        brushThicknessComboBox.Size = new Size(55, 28);
+        brushThicknessComboBox.SelectedIndexChanged += brushThicknessComboBox_SelectedIndexChanged;
+        brushThicknessComboBox.MouseLeave += brushThicknessComboBox_LostFocus;
+        // 
         // textBox
         // 
         textBox.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -321,6 +357,11 @@ partial class Form_Paint
         textBox.Name = "textBox";
         textBox.Size = new Size(29, 29);
         textBox.Click += textBox_Click;
+        // 
+        // aDividingLine3
+        // 
+        aDividingLine3.Name = "aDividingLine3";
+        aDividingLine3.Size = new Size(6, 32);
         // 
         // element
         // 
@@ -344,11 +385,10 @@ partial class Form_Paint
         // 
         // toolView
         // 
-        toolView.AutoSize = false;
         toolView.DisplayStyle = ToolStripItemDisplayStyle.Text;
         toolView.ImageTransparentColor = Color.Magenta;
         toolView.Name = "toolView";
-        toolView.Size = new Size(507, 29);
+        toolView.Size = new Size(47, 29);
         toolView.Text = "Tool: ";
         // 
         // Board_PB
@@ -398,6 +438,7 @@ partial class Form_Paint
         MainMenuStrip = menuStrip_top;
         Name = "Form_Paint";
         Text = "Form_Paint";
+        FormClosed += Formcloser_Click;
         menuStrip_top.ResumeLayout(false);
         menuStrip_top.PerformLayout();
         toolStrip1.ResumeLayout(false);
@@ -439,8 +480,8 @@ partial class Form_Paint
     private ToolStripButton color_selector;
     private ToolStripButton fill;
     private PictureBox Board_PB;
-    private ToolStripSeparator toolStripButton2;
-    private ToolStripSeparator toolStripButton3;
+    private ToolStripSeparator aDividingLine1;
+    private ToolStripSeparator aDividingLine2;
     private ToolStripButton element;
     private OpenFileDialog openDlg;
     private SaveFileDialog saveDlg;
@@ -451,4 +492,8 @@ partial class Form_Paint
     private PrintDialog printDlg;
     private PrintPreviewDialog printPreviewDlg;
     private System.Drawing.Printing.PrintDocument printDoc;
+    private ToolStripSeparator aDividingLine3;
+    private ToolStripComboBox brushThicknessComboBox;
+    private ToolStripButton getColoe;
+    private ToolStripButton eraser;
 }
