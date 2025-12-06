@@ -53,7 +53,6 @@ partial class Form_Paint
         selector_option = new ToolStripDropDownButton();
         selector_point = new ToolStripMenuItem();
         selector_rectangle = new ToolStripMenuItem();
-        selector_all = new ToolStripMenuItem();
         aDividingLine1 = new ToolStripSeparator();
         selectColorSample = new ToolStripButton();
         color_selector = new ToolStripButton();
@@ -64,7 +63,10 @@ partial class Form_Paint
         brushThicknessComboBox = new ToolStripComboBox();
         textBox = new ToolStripButton();
         aDividingLine3 = new ToolStripSeparator();
-        element = new ToolStripButton();
+        element = new ToolStripDropDownButton();
+        line = new ToolStripMenuItem();
+        rectangle = new ToolStripMenuItem();
+        circle = new ToolStripMenuItem();
         fill = new ToolStripButton();
         toolView = new ToolStripLabel();
         colorDialog1 = new ColorDialog();
@@ -238,7 +240,7 @@ partial class Form_Paint
         // 
         selector_option.AutoToolTip = false;
         selector_option.DisplayStyle = ToolStripItemDisplayStyle.Image;
-        selector_option.DropDownItems.AddRange(new ToolStripItem[] { selector_point, selector_rectangle, selector_all });
+        selector_option.DropDownItems.AddRange(new ToolStripItem[] { selector_point, selector_rectangle });
         selector_option.Image = (Image)resources.GetObject("selector_option.Image");
         selector_option.ImageTransparentColor = Color.Magenta;
         selector_option.MergeIndex = 0;
@@ -251,7 +253,7 @@ partial class Form_Paint
         selector_point.CheckState = CheckState.Checked;
         selector_point.Image = (Image)resources.GetObject("selector_point.Image");
         selector_point.Name = "selector_point";
-        selector_point.Size = new Size(157, 26);
+        selector_point.Size = new Size(229, 32);
         selector_point.Text = "선택";
         selector_point.TextAlign = ContentAlignment.MiddleRight;
         selector_point.Click += selector_Click;
@@ -261,19 +263,10 @@ partial class Form_Paint
         selector_rectangle.Image = (Image)resources.GetObject("selector_rectangle.Image");
         selector_rectangle.MergeIndex = 1;
         selector_rectangle.Name = "selector_rectangle";
-        selector_rectangle.Size = new Size(157, 26);
+        selector_rectangle.Size = new Size(229, 32);
         selector_rectangle.Text = "사각 선택";
         selector_rectangle.TextAlign = ContentAlignment.MiddleRight;
         selector_rectangle.Click += selector_Click;
-        // 
-        // selector_all
-        // 
-        selector_all.Image = (Image)resources.GetObject("selector_all.Image");
-        selector_all.MergeIndex = 2;
-        selector_all.Name = "selector_all";
-        selector_all.Size = new Size(157, 26);
-        selector_all.Text = "모두 선택";
-        selector_all.Click += selector_Click;
         // 
         // aDividingLine1
         // 
@@ -366,12 +359,35 @@ partial class Form_Paint
         // element
         // 
         element.DisplayStyle = ToolStripItemDisplayStyle.Image;
+        element.DropDownItems.AddRange(new ToolStripItem[] { line, rectangle, circle });
         element.Image = (Image)resources.GetObject("element.Image");
         element.ImageTransparentColor = Color.Magenta;
         element.Name = "element";
-        element.Size = new Size(29, 29);
-        element.Click += element_Click;
-        element.MouseUp += element_MouseUp;
+        element.Size = new Size(39, 29);
+        // 
+        // line
+        // 
+        line.Image = (Image)resources.GetObject("line.Image");
+        line.Name = "line";
+        line.Size = new Size(187, 26);
+        line.Text = "선 그리기";
+        line.Click += element_Click;
+        // 
+        // rectangle
+        // 
+        rectangle.Image = (Image)resources.GetObject("rectangle.Image");
+        rectangle.Name = "rectangle";
+        rectangle.Size = new Size(187, 26);
+        rectangle.Text = "사각형 그리기";
+        rectangle.Click += element_Click;
+        // 
+        // circle
+        // 
+        circle.Image = (Image)resources.GetObject("circle.Image");
+        circle.Name = "circle";
+        circle.Size = new Size(187, 26);
+        circle.Text = "원 그리기";
+        circle.Click += element_Click;
         // 
         // fill
         // 
@@ -470,7 +486,6 @@ partial class Form_Paint
     private ToolStrip toolStrip1;
     private ToolStripDropDownButton selector_option;
     private ToolStripMenuItem selector_rectangle;
-    private ToolStripMenuItem selector_all;
     public ToolStripMenuItem selector_point;
     private ToolStripButton bruch;
     private ColorDialog colorDlg;
@@ -482,7 +497,6 @@ partial class Form_Paint
     private PictureBox Board_PB;
     private ToolStripSeparator aDividingLine1;
     private ToolStripSeparator aDividingLine2;
-    private ToolStripButton element;
     private OpenFileDialog openDlg;
     private SaveFileDialog saveDlg;
     private ToolStripLabel toolView;
@@ -496,4 +510,8 @@ partial class Form_Paint
     private ToolStripComboBox brushThicknessComboBox;
     private ToolStripButton getColoe;
     private ToolStripButton eraser;
+    private ToolStripDropDownButton element;
+    private ToolStripMenuItem line;
+    private ToolStripMenuItem rectangle;
+    private ToolStripMenuItem circle;
 }

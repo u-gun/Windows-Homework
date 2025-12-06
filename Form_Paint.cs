@@ -2,7 +2,6 @@
 using System.Drawing.Imaging;
 using System.Drawing.Printing;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace _9_1113;
 public partial class Form_Paint : Form
@@ -32,7 +31,13 @@ public partial class Form_Paint : Form
     // ---------------- [선택/클립보드] ----------------
     private Rectangle selectionRectangle = Rectangle.Empty; // 현재 선택된 영역
     private Bitmap clipboardBitmap = null; // 복사/잘라내기된 이미지 데이터
-    // ------------------------------------------------
+                                           // ------------------------------------------------
+
+    // ----- 도형 및 텍스트, 드래그 기능을 위한 변수 -----
+    private Point shapeStartPoint;
+    private Point dragStartPoint;   // 이동 시작 시 마우스 위치
+    private bool isDraggingSelection = false; // 현재 선택 영역을 이동 중인지 여부
+    private TextBox activeTextBox = null; // 현재 활성화된 텍스트 박스
 
     public Form_Paint()
     {
@@ -175,11 +180,37 @@ public partial class Form_Paint : Form
         // 선택 도구이거나 붙여넣기 모드이고 선택 영역이 유효한 경우에만 점선 그리기
         if ((handleTool.Contains("selector") || handleTool == "move_paste") && !selectionRectangle.IsEmpty)
         {
-            // 점선 스타일 펜 생성 (빨간색 점선으로 표시)
-            using (Pen dashedPen = new Pen(Color.Red, 1))
+            // 이동 중인 이미지가 있다면(cut/paste 상태) 미리보기 그리기
+            if (handleTool == "selector_move_paste" && clipboardBitmap != null)
+            {
+                e.Graphics.DrawImage(clipboardBitmap, selectionRectangle);
+            }
+
+            // 점선 스타일 펜 생성
+            using (Pen dashedPen = new Pen(Color.Blue, 1))
             {
                 dashedPen.DashStyle = DashStyle.Dash;
                 e.Graphics.DrawRectangle(dashedPen, selectionRectangle);
+            }
+        } // 2. 도형 그리기 미리보기 (마우스 드래그 중일 때)
+        else if (IsDrawing && (handleTool == "rectangle" || handleTool == "circle" || handleTool == "line"))
+        {
+            using (Pen previewPen = new Pen(myPen.Color, myPen.Width))
+            {
+                previewPen.DashStyle = DashStyle.Solid;
+
+                if (handleTool == "line")
+                {
+                    e.Graphics.DrawLine(previewPen, shapeStartPoint, lastPoint);
+                }
+                else // 사각형, 원 그리기
+                {
+                    Rectangle rect = GetNormalizedRectangle(shapeStartPoint, lastPoint);
+                    if (handleTool == "rectangle")
+                        e.Graphics.DrawRectangle(previewPen, rect);
+                    else if (handleTool == "circle")
+                        e.Graphics.DrawEllipse(previewPen, rect);
+                }
             }
         }
     }
@@ -328,9 +359,7 @@ public partial class Form_Paint : Form
 
         // 선택 모드 업데이트
         handleTool = clickedItem.Name;
-
-        toolView.Text = "Tool: ";
-        toolView.Text = toolView.Text.Replace("Tool: ", "Tool: " + handleTool.ToString());
+        updateToolView();
     }
 
     public void selectAll_Click(object sender, EventArgs e)
@@ -338,11 +367,6 @@ public partial class Form_Paint : Form
         if (Bitmap != null)
         {
             selectionRectangle = new Rectangle(0, 0, Bitmap.Width, Bitmap.Height);
-
-            // 도구 모드를 선택 모드로 유지합니다. (필요하다면 "selector"와 같은 적절한 이름으로 설정)
-            // handleTool = "selector"; 
-            // toolView.Text = "Tool: " + handleTool; // UI 업데이트
-
             Board_PB.Invalidate();
         }
     }
@@ -400,19 +424,57 @@ public partial class Form_Paint : Form
             selectionRectangle = Rectangle.Empty;
             Board_PB.Invalidate();
         }
+        else if (handleTool == "rectangle" || handleTool == "circle" || handleTool == "line")
+        {
+            // 도형 그리기 시작
+            IsDrawing = true; // 도형 드래그 중임을 표시
+            shapeStartPoint = e.Location;
+            lastPoint = e.Location; // 현재 위치 저장 (Paint에서 사용)
+        }
+        else if (handleTool == "textBox")
+        {
+            // 텍스트 박스 생성
+            CreateTextBox(e.Location);
+        }
         else if (handleTool.Contains("selector"))
         {
-            // 선택 도구로 새로운 선택을 시작할 때
-            IsDrawing = false;
-            IsSelecting = true;
-            selectionStartPoint = e.Location;
-            selectionEndPoint = e.Location;
-            selectionRectangle = Rectangle.Empty;
-        }
-        // 붙여넣기 모드에서 마우스 다운을 처리하여 이동/재배치 기능을 구현할 수 있습니다.
-        else if (handleTool == "selector_move_paste" && selectionRectangle.Contains(e.Location))
-        {
-            // TODO: 마우스 다운 시 붙여넣기된 이미지 이동 시작 로직 추가 (선택 사항)
+            // 이미 선택된 영역 내부를 클릭했다면 -> 이동 모드 시작
+            if (!selectionRectangle.IsEmpty && selectionRectangle.Contains(e.Location))
+            {
+                // 붙여넣기 모드가 아니라면, 현재 영역을 잘라내어 clipboardBitmap으로 만듦 (이동 준비)
+                if (handleTool != "selector_move_paste")
+                {
+                    SaveState(); // 이동 전 상태 저장
+                    CopySelectionToClipboard(); // 현재 영역 복사
+
+                    // 원본 영역 지우기 (흰색 채우기)
+                    using (Graphics g = Graphics.FromImage(Bitmap))
+                    using (SolidBrush brush = new SolidBrush(Color.White))
+                    {
+                        g.FillRectangle(brush, selectionRectangle);
+                    }
+
+                    handleTool = "selector_move_paste"; // 이동 모드로 변경
+                }
+                isDraggingSelection = true;
+                dragStartPoint = e.Location;
+            }
+            else
+            {
+                // 그리기 확정
+                if (clipboardBitmap != null && handleTool == "selector_move_paste")
+                {
+                    PasteToBitmap(); // 현재 selectionRectangle 위치에 이미지를 그림
+                    handleTool = "selector"; // 기본 선택 도구로 복귀
+                }
+
+                // 새로운 선택 시작
+                IsDrawing = false;
+                IsSelecting = true;
+                selectionStartPoint = e.Location;
+                selectionEndPoint = e.Location;
+                selectionRectangle = Rectangle.Empty;
+            }
         }
         else if (handleTool == "dropper") // 스포이드 기능
         {
@@ -421,8 +483,8 @@ public partial class Form_Paint : Form
             myPen.Color = selectedColor;
 
             handleTool = "brush";
-
         }
+        updateToolView();
     }
 
     private void Board_PB_MouseUp(object sender, MouseEventArgs e)
@@ -430,17 +492,50 @@ public partial class Form_Paint : Form
         if (IsDrawing)
         {
             IsDrawing = false;
-            SaveState(); // 드로잉 완료 후 상태 저장
+
+            if (handleTool == "rectangle" || handleTool == "circle" || handleTool == "line")
+            {
+                SaveState(); // Undo 저장
+                using (Graphics g = Graphics.FromImage(Bitmap))
+                {
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
+
+                    // 선 그리기 확정
+                    if (handleTool == "line")
+                    {
+                        g.DrawLine(myPen, shapeStartPoint, e.Location);
+                    }
+                    else // 사각형, 원 확정
+                    {
+                        Rectangle rect = GetNormalizedRectangle(shapeStartPoint, e.Location);
+                        if (rect.Width > 0 && rect.Height > 0)
+                        {
+                            if (handleTool == "rectangle")
+                                g.DrawRectangle(myPen, rect);
+                            else if (handleTool == "circle")
+                                g.DrawEllipse(myPen, rect);
+                        }
+                    }
+                }
+                Board_PB.Image = Bitmap;
+                Board_PB.Invalidate();
+            }
+            else
+            {
+                SaveState(); // 브러시 등 기타 작업 저장
+            }
         }
         else if (IsSelecting)
         {
             IsSelecting = false;
-            // 최종 선택 영역 확정은 MouseMove에서 완료됨
             if (selectionRectangle.Width <= 0 || selectionRectangle.Height <= 0)
-            {
                 selectionRectangle = Rectangle.Empty;
-            }
             Board_PB.Invalidate(); // 최종 선택 영역 표시를 위해 갱신
+        }
+        else if (isDraggingSelection)
+        {
+            // 드래그 종료 (아직 비트맵에 붙여넣지는 않고, 떠있는 상태 유지)
+            isDraggingSelection = false;
         }
     }
 
@@ -448,49 +543,81 @@ public partial class Form_Paint : Form
     {
         if (IsDrawing)
         {
-            Graphics Grp = Graphics.FromImage(Bitmap);
-            if (handleTool == "eraser")
+            if (handleTool == "brush" || handleTool == "eraser")
             {
-                Grp.DrawLine(eraserPen, lastPoint, e.Location);
+                // 기존 브러시 로직
+                Graphics Grp = Graphics.FromImage(Bitmap);
+                if (handleTool == "eraser") Grp.DrawLine(eraserPen, lastPoint, e.Location);
+                else Grp.DrawLine(myPen, lastPoint, e.Location);
+
+                lastPoint = e.Location;
+                Board_PB.Image = Bitmap;
             }
-            else Grp.DrawLine(myPen, lastPoint, e.Location);
-            lastPoint = e.Location;
-            Board_PB.Image = Bitmap;
+            else if (handleTool == "rectangle" || handleTool == "circle" || handleTool == "line")
+            {
+                // 도형 미리보기 (실제 그리기는 Paint 이벤트에서 처리)
+                lastPoint = e.Location; // 현재 마우스 위치 업데이트
+                Board_PB.Invalidate();  // 화면 갱신 요청 -> Paint 이벤트 발생
+            }
         }
         else if (IsSelecting)
         {
+            // 선택 영역 드래그 중
             selectionEndPoint = e.Location;
-            // 선택 영역을 계산
-            selectionRectangle = new Rectangle(
-                Math.Min(selectionStartPoint.X, selectionEndPoint.X),
-                Math.Min(selectionStartPoint.Y, selectionEndPoint.Y),
-                Math.Abs(selectionStartPoint.X - selectionEndPoint.X),
-                Math.Abs(selectionStartPoint.Y - selectionEndPoint.Y)
-            );
-            Board_PB.Invalidate(); // 선택 영역을 다시 그리기 위해 갱신
+            selectionRectangle = GetNormalizedRectangle(selectionStartPoint, selectionEndPoint);
+            Board_PB.Invalidate();
         }
-        // TODO: 붙여넣기 모드에서 마우스 이동을 처리하여 이미지 드래그 이동 로직 추가 가능
+        else if (isDraggingSelection && handleTool == "selector_move_paste")
+        {
+            // [추가] 선택된 요소(이미지) 드래그 이동
+            int dx = e.X - dragStartPoint.X;
+            int dy = e.Y - dragStartPoint.Y;
+
+            selectionRectangle.X += dx;
+            selectionRectangle.Y += dy;
+
+            dragStartPoint = e.Location; // 기준점 업데이트
+            Board_PB.Invalidate(); // 이동된 위치에 다시 그리기 위해 갱신
+        }
     }
 
     private void select_brush_Click(object sender, EventArgs e)
     {
-        handleTool = "brush";
-        toolView.Text = "Tool: ";
-        toolView.Text = toolView.Text.Replace("Tool: ", "Tool: " + handleTool.ToString());
+        handleTool = "brush"; updateToolView();
     }
 
     private void textBox_Click(object sender, EventArgs e)
     {
-        handleTool = "testBox";
-        toolView.Text = "Tool: ";
-        toolView.Text = toolView.Text.Replace("Tool: ", "Tool: " + handleTool.ToString());
+        handleTool = "textBox"; updateToolView();
     }
 
     private void element_Click(object sender, EventArgs e)
     {
-        handleTool = "element";
-        toolView.Text = "Tool: ";
-        toolView.Text = toolView.Text.Replace("Tool: ", "Tool: " + handleTool.ToString());
+        // 클릭 요소
+        ToolStripMenuItem clickedItem = (ToolStripMenuItem)sender;
+        if (clickedItem == null || string.IsNullOrEmpty(clickedItem.Name)) return;
+
+        // 부모 요소
+        if (clickedItem.OwnerItem == null) return;
+        ToolStripDropDownButton parent = (ToolStripDropDownButton)clickedItem.OwnerItem;
+
+        // 선택했던 요소 해제
+        foreach (ToolStripItem item in parent.DropDownItems)
+        {
+            // 현재 항목이 ToolStripMenuItem이 아니면 다음 항목으로 건너뛰기
+            ToolStripMenuItem menuItem = item as ToolStripMenuItem;
+            if (menuItem == null) continue;
+
+            menuItem.Checked = false;
+        }
+
+        clickedItem.Checked = true;
+
+        parent.Image = clickedItem.Image;
+
+        // 선택 모드 업데이트
+        handleTool = clickedItem.Name;
+        updateToolView();
     }
 
     public void fillSelection_Click(object sender, EventArgs e)
@@ -527,101 +654,79 @@ public partial class Form_Paint : Form
         }
     }
 
+    // 텍스트 박스 로직들
+    // 텍스트 박스 생성
+    private void CreateTextBox(Point location)
+    {
+        if (activeTextBox != null) CommitText(); // 기존 박스가 있으면 확정
+
+        activeTextBox = new TextBox();
+        activeTextBox.Location = location;
+        activeTextBox.Size = new Size(150, 30); // 기본 크기
+        activeTextBox.Font = new Font("Malgun Gothic", 12);
+        activeTextBox.ForeColor = myPen.Color; // 현재 펜 색상 적용
+        activeTextBox.BorderStyle = BorderStyle.FixedSingle;
+
+        // 엔터키 입력 시 확정 이벤트 연결
+        activeTextBox.KeyDown += (s, e) =>
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                CommitText();
+                e.SuppressKeyPress = true; // 소리 방지
+            }
+        };
+
+        Board_PB.Controls.Add(activeTextBox);
+        activeTextBox.Focus();
+    }
+
+    // 텍스트를 비트맵에 그리기 (확정)
+    private void CommitText()
+    {
+        if (activeTextBox == null) return;
+
+        if (!string.IsNullOrWhiteSpace(activeTextBox.Text))
+        {
+            SaveState();
+            using (Graphics g = Graphics.FromImage(Bitmap))
+            {
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+
+                using (Brush brush = new SolidBrush(activeTextBox.ForeColor))
+                {
+                    g.DrawString(activeTextBox.Text, activeTextBox.Font, brush, activeTextBox.Location);
+                }
+            }
+            Board_PB.Image = Bitmap;
+            Board_PB.Invalidate();
+        }
+
+        // 컨트롤 제거
+        Board_PB.Controls.Remove(activeTextBox);
+        activeTextBox.Dispose();
+        activeTextBox = null;
+    }
+
     private void selectColorSample_Click(object sender, EventArgs e)
     {
         ToolStripItem box = (ToolStripItem)sender;
         myPen.Color = box.BackColor;
     }
 
-    private void element_MouseUp(object sender, MouseEventArgs e)
-    {
-        if (handleTool == "element")
-        {
 
+    private void PasteToBitmap()
+    {
+        if (clipboardBitmap == null) return;
+
+        SaveState();
+        using (Graphics g = Graphics.FromImage(Bitmap))
+        {
+            g.DrawImage(clipboardBitmap, selectionRectangle.Location);
         }
-    }
-
-
-    public List<Point> GetPolygonCoordinates(IEnumerable<Point> points)
-    {
-        // 입력받은 IEnumerable<Point> (배열, 리스트 모두 가능)를 List로 변환하여 반환합니다.
-        return new List<Point>(points);
-    }
-
-    private void DrawMyPolygon(Graphics g)
-    {
-        Point[] polygonPoints = new Point[]
-        {
-        new Point(50, 50),
-        new Point(150, 50),
-        new Point(200, 150),
-        new Point(100, 200),
-        new Point(0, 150)
-        };
-
-        using (Pen blackPen = new Pen(Color.Black, 3))
-        {
-            // DrawPolygon 메서드는 마지막 꼭짓점에서 첫 번째 꼭짓점으로 자동으로 선을 이어 닫힌 다각형을 만듭니다.
-            g.DrawPolygon(blackPen, polygonPoints);
-        }
-    }
-
-
-    /// <summary>
-    /// 두 다각형이 좌표 공간에서 겹치는지 여부를 반환합니다.
-    /// </summary>
-    /// <param name="polygonA">첫 번째 다각형의 꼭짓점 배열.</param>
-    /// <param name="polygonB">두 번째 다각형의 꼭짓점 배열.</param>
-    /// <returns>두 다각형이 겹치면 True, 아니면 False.</returns>
-    public bool DoPolygonsIntersect(Point[] polygonA, Point[] polygonB)
-    {
-        // GDI+의 GraphicsPath를 사용하여 다각형 영역을 정의합니다.
-        using (GraphicsPath pathA = new GraphicsPath())
-        using (GraphicsPath pathB = new GraphicsPath())
-        {
-            // 다각형 A의 경로를 추가
-            if (polygonA.Length >= 3)
-                pathA.AddPolygon(polygonA);
-
-            // 다각형 B의 경로를 추가
-            if (polygonB.Length >= 3)
-                pathB.AddPolygon(polygonB);
-
-            // A의 영역을 나타내는 Region 객체를 만듭니다.
-            Region regionA = new Region(pathA);
-
-            // RegionA와 PathB가 교차하는지 확인합니다.
-            // IntersectWith() 메서드는 regionA 자체를 변경하므로,
-            // 이를 테스트하는 목적으로 사용하기 위해 새로운 Region을 만들어야 합니다.
-            // 또는 IsVisible을 사용합니다. 여기서는 GetBounds와 IsVisible을 혼합 사용합니다.
-
-            // 1. 다각형 B의 경계를 사용하여 Region A와 교차하는지 테스트
-            RectangleF boundsB = pathB.GetBounds();
-
-            if (regionA.IsVisible(boundsB))
-            {
-                // 경계 상자가 겹치면 더 정밀하게 확인합니다.
-                // B의 꼭짓점 중 하나라도 A 영역 내에 있는지 확인합니다.
-                if (polygonB.Any(p => pathA.IsVisible(p)))
-                    return true;
-            }
-
-            // 2. 다각형 A의 경계를 사용하여 Region B와 교차하는지 테스트
-            Region regionB = new Region(pathB);
-            RectangleF boundsA = pathA.GetBounds();
-
-            if (regionB.IsVisible(boundsA))
-            {
-                if (polygonA.Any(p => pathB.IsVisible(p)))
-                    return true;
-            }
-
-            // 완전한 교차 감지를 위해서는 더 복잡한 SAT(Separating Axis Theorem) 알고리즘이 필요하지만,
-            // GDI+를 사용한 이 방법은 간단한 WinForms 환경에서 근사적인 충돌 감지에 유용합니다.
-
-            // 간단한 테스트: A의 바운딩 박스가 B의 바운딩 박스와 겹치는지 확인
-            return pathA.GetBounds().IntersectsWith(pathB.GetBounds());
-        }
+        Board_PB.Image = Bitmap;
+        Board_PB.Invalidate();
     }
 
     /// <summary>
